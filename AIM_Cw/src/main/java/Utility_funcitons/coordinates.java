@@ -17,13 +17,13 @@ public class coordinates {
         ArrayList<String> cities = new ArrayList<>();
         Scanner reader = new Scanner(inputStream);
         while (reader.hasNextLine()){
-            cities.add(splitONFirstBlank(reader.nextLine()));
+            cities.add(splitOnFirstBlank(reader.nextLine()));
         }
         reader.close();
         return cities.subList(6,cities.size()-1);
     }
 
-    private String splitONFirstBlank(String word){
+    private String splitOnFirstBlank(String word){
         return word.substring(word.indexOf(" ")+1);
     }
 

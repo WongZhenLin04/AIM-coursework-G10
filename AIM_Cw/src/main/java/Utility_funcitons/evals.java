@@ -22,8 +22,9 @@ public class evals {
         double sum=0;
         List<String> coorList=coorFuncs.getCoordsList();
         for(int i=0;i<Sol.length-1;i++){
-            sum+=calcEuDist(coorList.get(Sol[i]),coorList.get(Sol[i+1]));
+            sum+=calcEuDist(coorList.get(Sol[i+1]),coorList.get(Sol[i]));
         }
+        sum+=calcEuDist(coorList.get(Sol[Sol.length-1]),coorList.get(Sol[0]));
         return sum;
     }
 

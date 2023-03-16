@@ -1,4 +1,4 @@
-import Algorithms.Meme;
+import Memetic_Algorithm.Meme;
 import Utility_funcitons.evals;
 
 public class Runner {

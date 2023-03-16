@@ -1,7 +1,8 @@
-package Algorithms;
+package Memetic_Algorithm;
 
 import Utility_funcitons.evals;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -15,9 +16,13 @@ public class Meme {
         return null;
     }
 
+    //randomly generate a population
     private List<int[]> genInitial(int populationSize){
-
-        return null;
+        List<int[]> res = new ArrayList<>();
+        for(int i=0;i<populationSize;i++){
+            res.add(genRandomisedCities());
+        }
+        return res;
     }
 
     public int[] genRandomisedCities(){
