@@ -8,8 +8,11 @@ import java.util.Random;
 
 public class Meme {
     private final evals evalFunc;
+    private final VNDHue vndHue;
+
     public Meme(){
         this.evalFunc=new evals();
+        this.vndHue=new VNDHue();
     }
 
     public int[] memeAlgo(){
@@ -17,15 +20,18 @@ public class Meme {
     }
 
     //randomly generate a population
-    private List<int[]> genInitial(int populationSize){
+    public List<int[]> genInitial(int populationSize,int subStringSize){
         List<int[]> res = new ArrayList<>();
         for(int i=0;i<populationSize;i++){
-            res.add(genRandomisedCities());
+            //perform VND on each city
+            int[]bestOne= vndHue.applyVHD(genRandomisedCities(),subStringSize);
+            res.add(bestOne);
+            System.out.println(evalFunc.evalSol(bestOne));
         }
         return res;
     }
 
-    public int[] genRandomisedCities(){
+    private int[] genRandomisedCities(){
         int[] res=new int[107];
         for (int i=0;i<res.length;i++){
             res[i]=i;
