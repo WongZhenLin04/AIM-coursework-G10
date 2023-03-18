@@ -10,7 +10,7 @@ public class evals {
     }
 
     //function for calculating euclidean distance
-    private double calcEuDist(String coords1,String coords2){
+    public double calcEuDist(String coords1,String coords2){
         double[] pos1 = coorFuncs.turnCoordsToDob(coords1);
         double[] pos2 = coorFuncs.turnCoordsToDob(coords2);
         double res=Math.sqrt(Math.pow((pos2[0]-pos1[0]),2)+Math.pow((pos2[1]-pos1[1]),2));
