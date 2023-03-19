@@ -1,5 +1,8 @@
+import Ant_Colony_Optimization_Algorithm.ACOTestFrameConfig;
+import Ant_Colony_Optimization_Algorithm.AntColonyOptimization;
 import Memetic_Algorithm.Meme;
 import Utility_funcitons.AdTuples;
+import Utility_funcitons.coordinates;
 import Utility_funcitons.matrix_operations;
 
 import java.util.List;
@@ -20,6 +23,14 @@ public class Runner {
             fun.printArray(cycles.get(i));
             System.out.println();
         }
+
+        /*Ant Colony Optimization*/
+        ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
+        coordinates coordinates = new coordinates();
+        List<String> cities = coordinates.getCoordsList();
+        double[][] distanceMatrix = Matrix_operations.matrixDistancesBetweenCities(cities);
+        AntColonyOptimization antColonyOptimization = new AntColonyOptimization(cities.size(), distanceMatrix);
+        antColonyOptimization.displayBestSolution();
     }
 
     public void printArray(int[]ar){
