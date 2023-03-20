@@ -3,10 +3,20 @@ package Utility;
 public class AdTuples_memes {
     private double distance;
     private String matrixName;
+    private boolean visited;
 
-    public AdTuples_memes(double distance, String matrixName){
+    public AdTuples_memes(double distance, String matrixName,boolean visited){
         this.distance=distance;
         this.matrixName=matrixName;
+        this.visited=visited;
+    }
+
+    public boolean isVisited() {
+        return visited;
+    }
+
+    public void setVisited(boolean visited) {
+        this.visited = visited;
     }
 
     public double getDistance() {

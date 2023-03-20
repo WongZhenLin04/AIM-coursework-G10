@@ -2,6 +2,7 @@ package Utility;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 public class matrix_operators {
     private final coordinates coords;
@@ -13,7 +14,7 @@ public class matrix_operators {
     }
     //given an integer array of orders of cities to traverse, make an Adjacency matrix
     public AdTuples_memes[][] makeAdMatrix(int[] cities, String matrix){
-        AdTuples_memes[][] adMatrix=makeZeroMatrix(cities.length);
+        AdTuples_memes[][] adMatrix= makeMaxMatrix(cities.length);
         for (int i = 0; i < cities.length-1; i++) {
             String coord1= coords.getCoordsList().get(cities[i]);
             String coord2= coords.getCoordsList().get(cities[i+1]);
@@ -37,16 +38,18 @@ public class matrix_operators {
         return distanceMatrix;
     }
 
-    //make a matrix full of zeros
-    public AdTuples_memes[][] makeZeroMatrix(int size){
+    //make a matrix full of Max values
+    public AdTuples_memes[][] makeMaxMatrix(int size){
         AdTuples_memes[][] adMatrix=new AdTuples_memes[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                adMatrix[i][j]=new AdTuples_memes(Double.MAX_VALUE,"\0");
+                adMatrix[i][j]=new AdTuples_memes(Double.MAX_VALUE,"\0",false);
             }
         }
         return adMatrix;
     }
+
+    //make a matrix full of zeros
     private double[][] makeZeroMatrixDouble(int size){
         double[][] matrix = new double[size][size];
         for(int i = 0; i < size; i++){
@@ -73,42 +76,92 @@ public class matrix_operators {
         return ad1;
     }
 
-    //from a llist of cities, get the possible edges
-    public List<edges_memes> getEdges(int[] path){
-        List<edges_memes> edges_memes =new ArrayList<>();
-        for (int i = 0; i < path.length-1; i++) {
-            edges_memes.add(new edges_memes(path[i],path[i+1]));
-        }
-        return edges_memes;
-    }
-
     //finding AB Cycles, return the order of cities to traverse in the form of int arrays
     //Should accept a combined matrix with two parents
     //only find AB cycle using greedy approach
-    public List<int[]> findABCycles(AdTuples_memes[][] combined, int[] path){
+    public List<int[]> findABCycles(AdTuples_memes[][] combined){
+        List<Integer> cycle= new ArrayList<>();
         List<int[]> ABCycles=new ArrayList<>();
-        List<edges_memes> edges_memes = getEdges(path);
-        //while the number of edges not empty, pick a vertex and start AB cycle
-        while(!edges_memes.isEmpty()){
-            //pick random vertex
-
+        int max=0;
+        //repeat until all nodes been visited(will have break statement for that)
+        while(max!=10000){
+            //random start point
+            int start = pickRandomPoint(combined);
+            //add start to cycle
+            cycle.add(start);
+            //pick any edge from any parent
+            int tolarence =0;
+            edges_memes connectingEdge = findNeighbour(combined[start],start,"\0");
+            //if cant find a neighbour for starting point, pick a different starting point 100 times or until an edge can be found, else just cancel entire thing
+            while(connectingEdge.getTo()==-1&&connectingEdge.getFrom()==-1){
+                start=pickRandomPoint(combined);
+                connectingEdge = findNeighbour(combined[start],start,"\0");
+                tolarence++;
+                if(tolarence==100){
+                    break;
+                }
+            }
+            if(tolarence==100){
+                break;
+            }
+            //set visited for connecting edge
+            combined[connectingEdge.getFrom()][connectingEdge.getTo()].setVisited(true);
+            cycle.add(connectingEdge.getTo());
+            while(true){
+                String name = combined[connectingEdge.getFrom()][connectingEdge.getTo()].getMatrixName();
+                connectingEdge = findNeighbour(combined[connectingEdge.getTo()],connectingEdge.getTo(),name);
+                if (connectingEdge.getFrom()==-1||connectingEdge.getTo()==-1){
+                    //reset combined
+                    resetVisited(combined,cycle);
+                    cycle.clear();
+                    break;
+                }
+                if(connectingEdge.getTo()==start){
+                    ABCycles.add(convertIntegers(cycle));
+                    cycle.clear();
+                    break;
+                }
+                combined[connectingEdge.getFrom()][connectingEdge.getTo()].setVisited(true);
+                cycle.add(connectingEdge.getTo());
+            }
+            max++;
         }
         return ABCycles;
     }
 
-    // find the closest neighbour for row specified by neighbourhood with an opposite city
-    public int findClosetNeighbour(AdTuples_memes[] neighbourhood, String matrixName){
-        double closestNeighbourDist=Double.MAX_VALUE;
-        //if no neighbour found, return -1
-        int closestNeighbourIndex=-1;
-        for (int i = 0; i < neighbourhood.length; i++) {
-            //if the neighbour is doesn't have a 0 distance and is closer to source then make that the closest neighbour and doesn't share the same neighbour as input, then update
-            if((neighbourhood[i].getDistance()!=Double.MAX_VALUE)&&(neighbourhood[i].getDistance()<closestNeighbourDist)&&(!neighbourhood[i].getMatrixName().equals(matrixName))){
-                closestNeighbourDist=neighbourhood[i].getDistance();
-                closestNeighbourIndex=i;
+    //reset the visited nodes to not visited
+    public void resetVisited(AdTuples_memes[][] combined,List<Integer> cycle){
+        for (int i = 0; i < cycle.size()-1; i++) {
+            combined[cycle.get(i)][cycle.get(i+1)].setVisited(false);
+        }
+    }
+
+    //picking a vertex
+    public int pickRandomPoint(AdTuples_memes[][] combined){
+        // Find all non-empty points in the matrix
+        List<int[]> nonZeroPoints = new ArrayList<>();
+        for (int i = 0; i < combined.length; i++) {
+            for (int j = 0; j < combined[0].length; j++) {
+                if (!combined[i][j].isVisited()) {
+                    nonZeroPoints.add(new int[]{i,j});
+                }
             }
         }
-        return closestNeighbourIndex;
+        Random random = new Random();
+        return nonZeroPoints.get(random.nextInt(nonZeroPoints.size()))[0];
+    }
+
+    // find the closest neighbour for row specified by neighbourhood with an opposite city
+    public edges_memes findNeighbour(AdTuples_memes[] neighbourhood,int from, String matrixName){
+        edges_memes edge=new edges_memes(-1,-1);
+        for (int i = 0; i < neighbourhood.length; i++) {
+            //if the neighbour is doesn't have an unknown distance and doesn't share the same neighbour as input, then update
+            if((neighbourhood[i].getDistance()!=Double.MAX_VALUE)&&(!neighbourhood[i].getMatrixName().equals(matrixName))&&(!neighbourhood[i].isVisited())){
+                edge=new edges_memes(from,i);
+                break;
+            }
+        }
+        return edge;
     }
 
     //converts an int array list to int array
