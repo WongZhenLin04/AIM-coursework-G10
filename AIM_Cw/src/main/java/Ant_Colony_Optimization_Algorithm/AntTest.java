@@ -1,7 +1,8 @@
 package Ant_Colony_Optimization_Algorithm;
 
-import Utility_funcitons.coordinates;
-import Utility_funcitons.matrix_operations;
+import Utility.coordinates;
+import Utility.coordinates;
+import Utility.matrix_operators;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.List;
@@ -16,7 +17,7 @@ class AntTest {
     void chooseNextCity() {
         coordinates coordinates = new coordinates();
         List<String> cities = coordinates.getCoordsList();
-        matrix_operations matrixOperations = new matrix_operations();
+        matrix_operators matrixOperations = new matrix_operators();
         double[][] distanceMatrix = matrixOperations.matrixDistancesBetweenCities(cities);
         AntColonyOptimization antColonyOptimization = new AntColonyOptimization(cities.size(),distanceMatrix);
         double[][] phemoroneMatrix = antColonyOptimization.getPheromoneMatrix();

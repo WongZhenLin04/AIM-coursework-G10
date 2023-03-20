@@ -5,8 +5,6 @@ import Memetic_Algorithm.crossX;
 import Memetic_Algorithm.opt2;
 import Utility.coordinates;
 import Utility.evals;
-import Utility.AdTuples_memes;
-import Utility.coordinates;
 import Utility.matrix_operators;
 
 import java.util.List;
