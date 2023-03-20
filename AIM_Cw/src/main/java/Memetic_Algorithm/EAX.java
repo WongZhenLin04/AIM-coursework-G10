@@ -28,6 +28,20 @@ public class EAX {
         return adMatrix;
     }
 
+    /*Make a distance adjancency matrix by giving list of cities*/
+    public double[][] matrixDistancesBetweenCities(List<String> cities){
+        double[][] distanceMatrix = makeZeroMatrixDouble(cities.size());
+        for(int i = 0; i < cities.size(); i++){
+            for(int j = 0; j < cities.size(); j++){
+                String coord1 = cities.get(i);
+                String coord2 = cities.get(j);
+                distanceMatrix[i][j] = evalFuncs.calcEuDist(coord1,coord2);
+                distanceMatrix[j][i] = evalFuncs.calcEuDist(coord1,coord2);
+            }
+        }
+        return distanceMatrix;
+    }
+
     //make a matrix full of zeros
     public AdTuples_memes[][] makeZeroMatrix(int size){
         AdTuples_memes[][] adMatrix=new AdTuples_memes[size][size];
@@ -37,6 +51,15 @@ public class EAX {
             }
         }
         return adMatrix;
+    }
+    private double[][] makeZeroMatrixDouble(int size){
+        double[][] matrix = new double[size][size];
+        for(int i = 0; i < size; i++){
+            for(int j = 0; j < size; j++){
+                matrix[i][j] = 0;
+            }
+        }
+        return matrix;
     }
 
     //combining 2 adjacency matrices
