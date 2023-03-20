@@ -1,6 +1,6 @@
 package Memetic_Algorithm;
 
-import Utility_funcitons.evals;
+import Utility.evals;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,13 +8,11 @@ import java.util.Random;
 
 public class Meme {
     private final evals evalFunc;
-    private final VNDHue vndHue;
-    private int populationSize;
-    private int subStringSize;
+    private final int populationSize;
+    private final int subStringSize;
 
     public Meme(int populationSize,int subStringSize){
         this.evalFunc=new evals();
-        this.vndHue=new VNDHue();
         this.populationSize=populationSize;
         this.subStringSize=subStringSize;
     }
@@ -31,7 +29,9 @@ public class Meme {
         List<int[]> res = new ArrayList<>();
         for(int i=0;i<populationSize;i++){
             //perform VND on each city
-            int[]bestOne= vndHue.applyVHD(genRandomisedCities(),subStringSize);
+            int[] randomConfig =genRandomisedCities();
+            VNDHue vndHue=new VNDHue();
+            int[]bestOne= vndHue.applyVHD(randomConfig,subStringSize);
             res.add(bestOne);
         }
         return res;
@@ -48,7 +48,7 @@ public class Meme {
         return best;
     }
 
-    private int[] genRandomisedCities(){
+    public int[] genRandomisedCities(){
         int[] res=new int[107];
         for (int i=0;i<res.length;i++){
             res[i]=i;

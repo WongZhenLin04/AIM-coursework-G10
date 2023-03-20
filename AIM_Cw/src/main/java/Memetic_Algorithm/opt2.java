@@ -1,11 +1,11 @@
 package Memetic_Algorithm;
 
-import Utility_funcitons.evals;
+import Utility.evals;
 
 import java.util.Arrays;
 
 public class opt2 {
-    private final Utility_funcitons.evals eval;
+    private final Utility.evals eval;
     private double bestCost = Integer.MAX_VALUE;
     public opt2(){
         this.eval=new evals();

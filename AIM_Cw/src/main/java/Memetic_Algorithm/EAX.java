@@ -1,19 +1,24 @@
-package Utility_funcitons;
+package Memetic_Algorithm;
+
+import Utility.AdTuples_memes;
+import Utility.coordinates;
+import Utility.edges_memes;
+import Utility.evals;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class matrix_operations {
+public class EAX {
     private final coordinates coords;
     private final evals evalFuncs;
 
-    public matrix_operations(){
+    public EAX(){
         this.coords=new coordinates();
         this.evalFuncs=new evals();
     }
     //given an integer array of orders of cities to traverse, make an Adjacency matrix
-    public AdTuples[][] makeAdMatrix(int[] cities, String matrix){
-        AdTuples[][] adMatrix=makeZeroMatrix(cities.length);
+    public AdTuples_memes[][] makeAdMatrix(int[] cities, String matrix){
+        AdTuples_memes[][] adMatrix=makeZeroMatrix(cities.length);
         for (int i = 0; i < cities.length-1; i++) {
             String coord1= coords.getCoordsList().get(cities[i]);
             String coord2= coords.getCoordsList().get(cities[i+1]);
@@ -24,18 +29,18 @@ public class matrix_operations {
     }
 
     //make a matrix full of zeros
-    public AdTuples[][] makeZeroMatrix(int size){
-        AdTuples[][] adMatrix=new AdTuples[size][size];
+    public AdTuples_memes[][] makeZeroMatrix(int size){
+        AdTuples_memes[][] adMatrix=new AdTuples_memes[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                adMatrix[i][j]=new AdTuples(Double.MAX_VALUE,"\0");
+                adMatrix[i][j]=new AdTuples_memes(Double.MAX_VALUE,"\0");
             }
         }
         return adMatrix;
     }
 
     //combining 2 adjacency matrices
-    public AdTuples[][] combineAd(AdTuples[][] ad1, AdTuples[][] ad2){
+    public AdTuples_memes[][] combineAd(AdTuples_memes[][] ad1, AdTuples_memes[][] ad2){
         for (int i = 0; i < ad1.length; i++) {
             for (int j = 0; j < ad1.length; j++) {
                 if(ad1[i][j].getDistance()==ad2[i][j].getDistance() && ad1[i][j].getDistance()!=Double.MAX_VALUE) {
@@ -50,55 +55,31 @@ public class matrix_operations {
         return ad1;
     }
 
+    //from a llist of cities, get the possible edges
+    public List<edges_memes> getEdges(int[] path){
+        List<edges_memes> edges_memes =new ArrayList<>();
+        for (int i = 0; i < path.length-1; i++) {
+            edges_memes.add(new edges_memes(path[i],path[i+1]));
+        }
+        return edges_memes;
+    }
+
     //finding AB Cycles, return the order of cities to traverse in the form of int arrays
     //Should accept a combined matrix with two parents
     //only find AB cycle using greedy approach
-    // should start with vertices from A
-    public List<int[]> findABCycles(AdTuples[][] combined){
+    public List<int[]> findABCycles(AdTuples_memes[][] combined, int[] path){
         List<int[]> ABCycles=new ArrayList<>();
-        //for each starting node check, start the search there
-        for (int i = 0; i < combined.length; i++) {
-            int alt=2;
-            //create cycle list
-            List<Integer> cycle=new ArrayList<Integer>();
-            cycle.add(i);
-            //start wit vertices from A or AB
-            int nextNearest=findClosetNeighbour(combined[i],"B");
-            while(true){
-                if(nextNearest== i){
-                    //if forming a complete cycle
-                    ABCycles.add(convertIntegers(cycle));
-                    //clear the list to facilitate the next cycle
-                    cycle.clear();
-                    break;
-                }
-                if (nextNearest==-1){
-                    //give up on searching if no nearest neighbour
-                    cycle.clear();
-                    break;
-                }
-                //alternate between cities
-                else {
-                    //before adding must ensure that the new closest node doesnt go back to the old node
-                    int tabu = nextNearest;
-                    if(alt%2==0){
-                        cycle.add(nextNearest);
-                        nextNearest=findClosetNeighbour(combined[nextNearest],"A");
-                    }
-                    else {
-                        cycle.add(nextNearest);
-                        nextNearest=findClosetNeighbour(combined[nextNearest],"B");
-                    }
-                    alt++;
-                }
-            }
+        List<edges_memes> edges_memes = getEdges(path);
+        //while the number of edges not empty, pick a vertex and start AB cycle
+        while(!edges_memes.isEmpty()){
+            //pick random vertex
 
         }
         return ABCycles;
     }
 
     // find the closest neighbour for row specified by neighbourhood with an opposite city
-    public int findClosetNeighbour(AdTuples[] neighbourhood,String matrixName){
+    public int findClosetNeighbour(AdTuples_memes[] neighbourhood, String matrixName){
         double closestNeighbourDist=Double.MAX_VALUE;
         //if no neighbour found, return -1
         int closestNeighbourIndex=-1;

@@ -1,10 +1,10 @@
-package Utility_funcitons;
+package Utility;
 
-public class AdTuples {
+public class AdTuples_memes {
     private double distance;
     private String matrixName;
 
-    public AdTuples(double distance,String matrixName){
+    public AdTuples_memes(double distance, String matrixName){
         this.distance=distance;
         this.matrixName=matrixName;
     }

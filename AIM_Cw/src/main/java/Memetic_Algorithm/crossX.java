@@ -1,9 +1,8 @@
 package Memetic_Algorithm;
 
-import Utility_funcitons.evals;
+import Utility.evals;
 
 import java.util.Arrays;
-import java.util.Collections;
 
 public class crossX {
     evals evalFuncs;
