@@ -1,8 +1,7 @@
 package Utility;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Random;
 
 public class matrix_operators {
     private final coordinates coords;
@@ -14,7 +13,7 @@ public class matrix_operators {
     }
     //given an integer array of orders of cities to traverse, make an Adjacency matrix
     public AdTuples_memes[][] makeAdMatrix(int[] cities, String matrix){
-        AdTuples_memes[][] adMatrix= makeMaxMatrix(cities.length);
+        AdTuples_memes[][] adMatrix= makeMaxMatrix(107);
         for (int i = 0; i < cities.length-1; i++) {
             String coord1= coords.getCoordsList().get(cities[i]);
             String coord2= coords.getCoordsList().get(cities[i+1]);
@@ -24,9 +23,9 @@ public class matrix_operators {
         return adMatrix;
     }
 
-    /*Make a distance adjancency matrix by giving list of cities*/
+    /*Make a distance adjacency matrix by giving list of cities*/
     public double[][] matrixDistancesBetweenCities(List<String> cities){
-        double[][] distanceMatrix = makeZeroMatrixDouble(cities.size());
+        double[][] distanceMatrix = makeZeroMatrixDouble(107);
         for(int i = 0; i < cities.size(); i++){
             for(int j = 0; j < cities.size(); j++){
                 String coord1 = cities.get(i);
@@ -76,96 +75,8 @@ public class matrix_operators {
         return ad1;
     }
 
-    //finding AB Cycles, return the order of cities to traverse in the form of int arrays
-    //Should accept a combined matrix with two parents
-    //only find AB cycle using greedy approach
-    public List<int[]> findABCycles(AdTuples_memes[][] combined){
-        List<Integer> cycle= new ArrayList<>();
-        List<int[]> ABCycles=new ArrayList<>();
-        int max=0;
-        //repeat until all nodes been visited(will have break statement for that)
-        while(max!=10000){
-            //random start point
-            int start = pickRandomPoint(combined);
-            //add start to cycle
-            cycle.add(start);
-            //pick any edge from any parent
-            int tolarence =0;
-            edges_memes connectingEdge = findNeighbour(combined[start],start,"\0");
-            //if cant find a neighbour for starting point, pick a different starting point 100 times or until an edge can be found, else just cancel entire thing
-            while(connectingEdge.getTo()==-1&&connectingEdge.getFrom()==-1){
-                start=pickRandomPoint(combined);
-                connectingEdge = findNeighbour(combined[start],start,"\0");
-                tolarence++;
-                if(tolarence==100){
-                    break;
-                }
-            }
-            if(tolarence==100){
-                break;
-            }
-            //set visited for connecting edge
-            combined[connectingEdge.getFrom()][connectingEdge.getTo()].setVisited(true);
-            cycle.add(connectingEdge.getTo());
-            while(true){
-                String name = combined[connectingEdge.getFrom()][connectingEdge.getTo()].getMatrixName();
-                connectingEdge = findNeighbour(combined[connectingEdge.getTo()],connectingEdge.getTo(),name);
-                if (connectingEdge.getFrom()==-1||connectingEdge.getTo()==-1){
-                    //reset combined
-                    resetVisited(combined,cycle);
-                    cycle.clear();
-                    break;
-                }
-                if(connectingEdge.getTo()==start){
-                    ABCycles.add(convertIntegers(cycle));
-                    cycle.clear();
-                    break;
-                }
-                combined[connectingEdge.getFrom()][connectingEdge.getTo()].setVisited(true);
-                cycle.add(connectingEdge.getTo());
-            }
-            max++;
-        }
-        return ABCycles;
-    }
-
-    //reset the visited nodes to not visited
-    public void resetVisited(AdTuples_memes[][] combined,List<Integer> cycle){
-        for (int i = 0; i < cycle.size()-1; i++) {
-            combined[cycle.get(i)][cycle.get(i+1)].setVisited(false);
-        }
-    }
-
-    //picking a vertex
-    public int pickRandomPoint(AdTuples_memes[][] combined){
-        // Find all non-empty points in the matrix
-        List<int[]> nonZeroPoints = new ArrayList<>();
-        for (int i = 0; i < combined.length; i++) {
-            for (int j = 0; j < combined[0].length; j++) {
-                if (!combined[i][j].isVisited()) {
-                    nonZeroPoints.add(new int[]{i,j});
-                }
-            }
-        }
-        Random random = new Random();
-        return nonZeroPoints.get(random.nextInt(nonZeroPoints.size()))[0];
-    }
-
-    // find the closest neighbour for row specified by neighbourhood with an opposite city
-    public edges_memes findNeighbour(AdTuples_memes[] neighbourhood,int from, String matrixName){
-        edges_memes edge=new edges_memes(-1,-1);
-        for (int i = 0; i < neighbourhood.length; i++) {
-            //if the neighbour is doesn't have an unknown distance and doesn't share the same neighbour as input, then update
-            if((neighbourhood[i].getDistance()!=Double.MAX_VALUE)&&(!neighbourhood[i].getMatrixName().equals(matrixName))&&(!neighbourhood[i].isVisited())){
-                edge=new edges_memes(from,i);
-                break;
-            }
-        }
-        return edge;
-    }
-
     //converts an int array list to int array
-    public static int[] convertIntegers(List<Integer> integers)
+    public int[] convertIntegers(List<Integer> integers)
     {
         int[] ret = new int[integers.size()];
         for (int i=0; i < ret.length; i++)
@@ -173,5 +84,79 @@ public class matrix_operators {
             ret[i] = integers.get(i);
         }
         return ret;
+    }
+
+    //functon returns true if two arrays have the same element
+    public boolean hasCommonElements(int[] a1, int[] a2)
+    {
+        HashMap<Integer, Integer> hashMap = new HashMap<>();
+        for (int i = 0; i < a1.length; i++) {
+            if (hashMap.containsKey(a1[i])) {
+                hashMap.put(a1[i],
+                        hashMap.get(a1[i]) + 1);
+            }
+            else {
+                hashMap.put(a1[i], 1);
+            }
+        }
+
+        for (int i = 0; i < a2.length; i++) {
+            if (hashMap.containsKey(a2[i])) {
+                hashMap.remove(a2[i]);
+              /* remove common elements from hashmap
+              to avoid duplicates*/
+                return true;
+            }
+        }
+        return false;
+    }
+
+    //given two adjacency matrices, return the common edges
+    public AdTuples_memes[][] returnCommonEdges(AdTuples_memes[][] Ad1,AdTuples_memes[][] Ad2){
+        for (int i = 0; i < Ad1.length; i++) {
+            for (int j = 0; j < Ad1.length; j++) {
+                if(Ad1[i][j].getDistance()!=Double.MAX_VALUE&&Ad2[i][j].getDistance()==Double.MAX_VALUE){
+                    Ad1[i][j].setDistance(Double.MAX_VALUE);
+                }
+            }
+        }
+        return Ad1;
+    }
+
+    //given two E matrices and a parent, remove the common edges of E matrices from parent
+    public AdTuples_memes[][] removeCommonEdges(AdTuples_memes[][] parent,AdTuples_memes[][] Ad1,AdTuples_memes[][] Ad2){
+        AdTuples_memes[][] commonEdges = returnCommonEdges(Ad1,Ad2);
+        for (int i = 0; i < Ad1.length; i++) {
+            for (int j = 0; j < Ad1.length; j++) {
+                if(parent[i][j].getDistance()!=Double.MAX_VALUE&&commonEdges[i][j].getDistance()!=Double.MAX_VALUE){
+                    parent[i][j].setDistance(Double.MAX_VALUE);
+                }
+            }
+        }
+        return parent;
+    }
+
+    public AdTuples_memes[][] addCommonEdges(AdTuples_memes[][] parent,AdTuples_memes[][] Ad1,AdTuples_memes[][] Ad2){
+        AdTuples_memes[][] commonEdges = returnCommonEdges(Ad1,Ad2);
+        for (int i = 0; i < Ad1.length; i++) {
+            for (int j = 0; j < Ad1.length; j++) {
+                if(parent[i][j].getDistance()==Double.MAX_VALUE&&commonEdges[i][j].getDistance()!=Double.MAX_VALUE){
+                    parent[i][j].setDistance(commonEdges[i][j].getDistance());
+                }
+            }
+        }
+        return parent;
+    }
+
+    public void countNumOfEdges(AdTuples_memes[][] ad){
+        int count=0;
+        for (int i = 0; i < ad.length; i++) {
+            for (int j = 0; j < ad.length; j++) {
+                if (ad[i][j].getDistance()!=Double.MAX_VALUE){
+                    count++;
+                }
+            }
+        }
+        System.out.println(count);
     }
 }
