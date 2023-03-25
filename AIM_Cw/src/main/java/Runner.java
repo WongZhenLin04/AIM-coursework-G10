@@ -1,3 +1,5 @@
+import Ant_Colony_Optimization_Algorithm.ACOTestFrameConfig;
+import Ant_Colony_Optimization_Algorithm.AntColonyOptimization;
 import Memetic_Algorithm.EAX;
 import Memetic_Algorithm.Meme;
 import Memetic_Algorithm.crossX;
@@ -21,13 +23,16 @@ public class Runner {
         AdTuples_memes[][] SolAd1 = Matrix_operators.makeAdMatrix(Sol,"A");
         AdTuples_memes[][] SolAd2 = Matrix_operators.makeAdMatrix(Sol1,"B");
         AdTuples_memes[][] SolAd =Matrix_operators.combineAd(SolAd1,SolAd2);
-        List<int[]> cycles= eax.findABCycles(SolAd);
-        List<AdTuples_memes[][]> ESet= eax.makeESet(cycles);
 
+        List<int[]>cycles=eax.findABCycles(SolAd);
+        List<AdTuples_memes[][]>Markiplier=eax.makeESet(cycles);
 
+        List<AdTuples_memes[][]> inter = eax.genIntermediateSet(SolAd1,SolAd2,Markiplier);
+        for (int i = 0; i < inter.size(); i++) {
+            Matrix_operators.countNumOfEdges(inter.get(i));
+        }
 
-        /*Ant Colony Optimization*//*
-
+        /*Ant Colony Optimization*/
         ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
         coordinates coordinates = new coordinates();
         List<String> cities = coordinates.getCoordsList();
@@ -35,7 +40,6 @@ public class Runner {
         AntColonyOptimization antColonyOptimization = new AntColonyOptimization(cities.size(), distanceMatrix);
         antColonyOptimization.displayBestSolution();
         System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
-        */
     }
 
     public void printMatrix(AdTuples_memes[][] ar){

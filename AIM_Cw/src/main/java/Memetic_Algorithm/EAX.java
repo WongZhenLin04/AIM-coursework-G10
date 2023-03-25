@@ -15,40 +15,42 @@ public class EAX {
     public EAX(){
         this.matrixOperators=new matrix_operators();
     }
-
-    // function to get the int array form of an intermediate solution
+    /*
+    // function to get the int array form of an E set solution, by turning E set into inter sols
     public void generateSolution(int[] parentA, List<AdTuples_memes[][]> ESet){
         AdTuples_memes[][] AMatrix = matrixOperators.makeAdMatrix(parentA,"A");
         List<AdTuples_memes[][]> interSet = genIntermediateSet(AMatrix,ESet);
-        int Source = parentA[0];
-        int path =parentA[1];
+        for (int i = 0; i < interSet.size(); i++) {
+            List<edges_memes> edges=matrixOperators.getEdges(interSet.get(i));
+            edges_memes startingEdge=edges.get(findFirstInstance(parentA[0],edges));
 
+        }
     }
+     */
 
     //generate intermediate solution by removing edges εi ∩ εA from φA and adding εi ∩ εB to φA
-    public List<AdTuples_memes[][]> genIntermediateSet(AdTuples_memes[][] parentA, List<AdTuples_memes[][]> ESet){
+
+    public List<AdTuples_memes[][]> genIntermediateSet(AdTuples_memes[][] parentA,AdTuples_memes[][] parentB, List<AdTuples_memes[][]> ESet){
         List<AdTuples_memes[][]> finalRes=new ArrayList<>();
         for (int i = 0; i < ESet.size(); i++) {
-            AdTuples_memes[][] parentACopy=parentA;
-            //remove edges from Parent A, the edges that they share with the first cycle in the E set
-            AdTuples_memes[][] removedCommon=matrixOperators.removeCommonEdges(parentACopy,ESet.get(0),ESet.get(i));
-            //add edges to Parent A, the edges that they share with the second cycle in the E set
-            AdTuples_memes[][] inter = matrixOperators.addCommonEdges(removedCommon,ESet.get(1),ESet.get(i));
-            finalRes.add(inter);
+            AdTuples_memes[][] commonA = matrixOperators.returnCommonEdges(parentA, ESet.get(i));
+            AdTuples_memes[][] commonB = matrixOperators.returnCommonEdges(parentB,ESet.get(i));
+
+            AdTuples_memes[][]removedCommon = matrixOperators.removeEdges(parentA,commonA);
+            AdTuples_memes[][]addedCommon = matrixOperators.addEdges(removedCommon,commonB);
+            finalRes.add(addedCommon);
         }
         return finalRes;
     }
+
 
     //function that takes in a list of AB cycles, if any two has vertices in common, then combine the two graphs and save it into the second entry of comparison
     public List<AdTuples_memes[][]> makeESet(List<int[]> cycles){
         //list of cycles in adjacency matrices form
         List<AdTuples_memes[][]> comparingList =makeListAd(cycles);
-        List<AdTuples_memes[][]> finalList = comparingList;
-        for (int i = 0; i < cycles.size()-1; i++) {
-            for (int j = 0; j < cycles.size(); j++) {
-                if(matrixOperators.hasCommonElements(cycles.get(i),cycles.get(j))){
-                    finalList.set(j,matrixOperators.combineAd(comparingList.get(i),comparingList.get(j)));
-                }
+        for (int j = 1; j < cycles.size(); j++) {
+            if(matrixOperators.hasCommonElements(cycles.get(0),cycles.get(j))){
+                comparingList.set(j,matrixOperators.combineAd(comparingList.get(0),comparingList.get(j)));
             }
         }
         return comparingList;
@@ -153,5 +155,16 @@ public class EAX {
             }
         }
         return edge;
+    }
+
+    // a function that takes in the from destination and returns the position of the edge in the list
+    public int findFirstInstance(int from, List<edges_memes> edges){
+        int index=-1;
+        for (int i = 0; i < edges.size(); i++) {
+            if (edges.get(i).getFrom() == from) {
+                index=i;
+            }
+        }
+        return index;
     }
 }
