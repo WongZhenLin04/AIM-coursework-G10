@@ -1,7 +1,6 @@
 package Utility;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class matrix_operators {
     private final coordinates coords;
@@ -61,18 +60,19 @@ public class matrix_operators {
 
     //combining 2 adjacency matrices
     public AdTuples_memes[][] combineAd(AdTuples_memes[][] ad1, AdTuples_memes[][] ad2){
+        AdTuples_memes[][] finalRes= copyMatrices(ad1);
         for (int i = 0; i < ad1.length; i++) {
             for (int j = 0; j < ad1.length; j++) {
                 if(ad1[i][j].getDistance()==ad2[i][j].getDistance() && ad1[i][j].getDistance()!=Double.MAX_VALUE) {
-                    ad1[i][j].setMatrixName("C");
+                    finalRes[i][j].setMatrixName("C");
                 }
-                else if(ad1[i][j].getDistance()==Double.MAX_VALUE){
-                    ad1[i][j].setMatrixName(ad2[i][j].getMatrixName());
-                    ad1[i][j].setDistance(ad2[i][j].getDistance());
+                else if(ad2[i][j].getDistance()!=Double.MAX_VALUE){
+                    finalRes[i][j].setMatrixName(ad2[i][j].getMatrixName());
+                    finalRes[i][j].setDistance(ad2[i][j].getDistance());
                 }
             }
         }
-        return ad1;
+        return finalRes;
     }
 
     //converts an int array list to int array
@@ -89,23 +89,11 @@ public class matrix_operators {
     //functon returns true if two arrays have the same element
     public boolean hasCommonElements(int[] a1, int[] a2)
     {
-        HashMap<Integer, Integer> hashMap = new HashMap<>();
         for (int i = 0; i < a1.length; i++) {
-            if (hashMap.containsKey(a1[i])) {
-                hashMap.put(a1[i],
-                        hashMap.get(a1[i]) + 1);
-            }
-            else {
-                hashMap.put(a1[i], 1);
-            }
-        }
-
-        for (int i = 0; i < a2.length; i++) {
-            if (hashMap.containsKey(a2[i])) {
-                hashMap.remove(a2[i]);
-              /* remove common elements from hashmap
-              to avoid duplicates*/
-                return true;
+            for (int j = 0; j < a2.length; j++) {
+                if (a1[i] == a2[j]) {
+                    return true;
+                }
             }
         }
         return false;
@@ -113,39 +101,41 @@ public class matrix_operators {
 
     //given two adjacency matrices, return the common edges
     public AdTuples_memes[][] returnCommonEdges(AdTuples_memes[][] Ad1,AdTuples_memes[][] Ad2){
+        AdTuples_memes[][] copy=copyMatrices(Ad1);
         for (int i = 0; i < Ad1.length; i++) {
             for (int j = 0; j < Ad1.length; j++) {
-                if(Ad1[i][j].getDistance()!=Double.MAX_VALUE&&Ad2[i][j].getDistance()==Double.MAX_VALUE){
-                    Ad1[i][j].setDistance(Double.MAX_VALUE);
+                if((Ad1[i][j].getDistance()!=Double.MAX_VALUE&&Ad2[i][j].getDistance()==Double.MAX_VALUE)||(Ad1[i][j].getDistance()==Double.MAX_VALUE&&Ad2[i][j].getDistance()!=Double.MAX_VALUE)){
+                    copy[i][j].setDistance(Double.MAX_VALUE);
                 }
             }
         }
-        return Ad1;
+        return copy;
     }
 
     //given two E matrices and a parent, remove the common edges of E matrices from parent
-    public AdTuples_memes[][] removeCommonEdges(AdTuples_memes[][] parent,AdTuples_memes[][] Ad1,AdTuples_memes[][] Ad2){
-        AdTuples_memes[][] commonEdges = returnCommonEdges(Ad1,Ad2);
+    public AdTuples_memes[][] removeEdges(AdTuples_memes[][] parent, AdTuples_memes[][] Ad1){
+        AdTuples_memes[][] finalRes=copyMatrices(parent);
         for (int i = 0; i < Ad1.length; i++) {
             for (int j = 0; j < Ad1.length; j++) {
-                if(parent[i][j].getDistance()!=Double.MAX_VALUE&&commonEdges[i][j].getDistance()!=Double.MAX_VALUE){
-                    parent[i][j].setDistance(Double.MAX_VALUE);
+                if(parent[i][j].getDistance()!=Double.MAX_VALUE&&Ad1[i][j].getDistance()!=Double.MAX_VALUE){
+                    finalRes[i][j].setDistance(Double.MAX_VALUE);
                 }
             }
         }
-        return parent;
+        return finalRes;
     }
 
-    public AdTuples_memes[][] addCommonEdges(AdTuples_memes[][] parent,AdTuples_memes[][] Ad1,AdTuples_memes[][] Ad2){
-        AdTuples_memes[][] commonEdges = returnCommonEdges(Ad1,Ad2);
+    //add edges from Ad1
+    public AdTuples_memes[][] addEdges(AdTuples_memes[][] offSpring, AdTuples_memes[][] Ad1){
+        AdTuples_memes[][] finalRes=copyMatrices(offSpring);
         for (int i = 0; i < Ad1.length; i++) {
             for (int j = 0; j < Ad1.length; j++) {
-                if(parent[i][j].getDistance()==Double.MAX_VALUE&&commonEdges[i][j].getDistance()!=Double.MAX_VALUE){
-                    parent[i][j].setDistance(commonEdges[i][j].getDistance());
+                if(offSpring[i][j].getDistance()==Double.MAX_VALUE&&Ad1[i][j].getDistance()!=Double.MAX_VALUE){
+                    finalRes[i][j].setDistance(Ad1[i][j].getDistance());
                 }
             }
         }
-        return parent;
+        return finalRes;
     }
 
     public void countNumOfEdges(AdTuples_memes[][] ad){
@@ -158,5 +148,56 @@ public class matrix_operators {
             }
         }
         System.out.println(count);
+    }
+
+    //from an Ad matrix, get the edges
+    public List<edges_memes> getEdges(AdTuples_memes[][] ad){
+        List<edges_memes> edges =new ArrayList<>();
+        for (int i = 0; i < ad.length; i++) {
+            for (int j = 0; j < ad.length; j++) {
+                if(ad[i][j].getDistance()!=Double.MAX_VALUE){
+                    edges.add(new edges_memes(i,j));
+                }
+            }
+        }
+        return edges;
+    }
+
+    //check if two matrices are equal
+    public boolean isEqualMatrices(AdTuples_memes[][]a1,AdTuples_memes[][] a2){
+        for (int i = 0; i < a1.length; i++) {
+            for (int j = 0; j < a1.length; j++) {
+                if((a1[i][j].getDistance()!=Double.MAX_VALUE && a2[i][j].getDistance()==Double.MAX_VALUE)||(a1[i][j].getDistance()==Double.MAX_VALUE && a2[i][j].getDistance()!=Double.MAX_VALUE)){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    // check if a matrix is just empty
+    public boolean isEmpty(AdTuples_memes[][]a1){
+        for (int i = 0; i < a1.length; i++) {
+            for (int j = 0; j < a1.length; j++) {
+                if(a1[i][j].getDistance()!=Double.MAX_VALUE){
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    //function to copy matrices of AdTuples
+    public AdTuples_memes[][] copyMatrices(AdTuples_memes[][] a){
+        AdTuples_memes[][] res = makeMaxMatrix(a.length);
+        for (int i = 0; i < res.length; i++) {
+            for (int j = 0; j < res.length; j++) {
+                if(a[i][j].getDistance()!=Double.MAX_VALUE){
+                    res[i][j].setDistance(a[i][j].getDistance());
+                    res[i][j].setMatrixName(a[i][j].getMatrixName());
+                }
+            }
+        }
+        return res;
     }
 }
