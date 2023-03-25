@@ -26,11 +26,8 @@ public class Runner {
 
         List<int[]>cycles=eax.findABCycles(SolAd);
         List<AdTuples_memes[][]>Markiplier=eax.makeESet(cycles);
-
         List<AdTuples_memes[][]> inter = eax.genIntermediateSet(SolAd1,SolAd2,Markiplier);
-        for (int i = 0; i < inter.size(); i++) {
-            Matrix_operators.countNumOfEdges(inter.get(i));
-        }
+        
 
         /*Ant Colony Optimization*/
         ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
