@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.Random;
 import java.util.List;
 
-import Utility_funcitons.evals;
+import Utility.evals;
 
 public class LBSA {
 

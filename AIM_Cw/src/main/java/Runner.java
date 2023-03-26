@@ -6,34 +6,28 @@ import Memetic_Algorithm.crossX;
 import Memetic_Algorithm.opt2;
 import Utility.*;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Runner {
     public static void main(String[] args){
         evals evals = new evals();
-        matrix_operators Matrix_operators=new matrix_operators();
         EAX eax = new EAX();
+        matrix_operators matrix_operators = new matrix_operators();
         /*Memetic algorithm*/
-        Meme meme = new Meme(30,4);
-        Runner fun = new Runner();
-        opt2 opt2 = new opt2();
-        crossX crossX = new crossX();
-        int[] Sol=meme.genRandomisedCities();
-        int[] Sol1= meme.genRandomisedCities();
-        AdTuples_memes[][] SolAd1 = Matrix_operators.makeAdMatrix(Sol,"A");
-        AdTuples_memes[][] SolAd2 = Matrix_operators.makeAdMatrix(Sol1,"B");
-        AdTuples_memes[][] SolAd =Matrix_operators.combineAd(SolAd1,SolAd2);
+        Meme meme = new Meme(30,4,40,20);
+        int [] bestSol = meme.applyMemes();
+        System.out.println(Arrays.toString(bestSol));
+        System.out.println(evals.evalSol(bestSol));
 
-        List<int[]>cycles=eax.findABCycles(SolAd);
-        List<AdTuples_memes[][]>Markiplier=eax.makeESet(cycles);
-        List<AdTuples_memes[][]> inter = eax.genIntermediateSet(SolAd1,SolAd2,Markiplier);
-        
+        System.out.println();
 
         /*Ant Colony Optimization*/
         ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
         coordinates coordinates = new coordinates();
         List<String> cities = coordinates.getCoordsList();
-        double[][] distanceMatrix = Matrix_operators.matrixDistancesBetweenCities(cities);
+        double[][] distanceMatrix = matrix_operators.matrixDistancesBetweenCities(cities);
         AntColonyOptimization antColonyOptimization = new AntColonyOptimization(cities.size(), distanceMatrix);
         antColonyOptimization.displayBestSolution();
         System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
@@ -46,7 +40,7 @@ public class Runner {
                     System.out.print(0);
                 }
                 else{
-                    System.out.print(ar[i][j].getDistance());
+                    System.out.print(ar[i][j].isVisited());
                 }
             }
             System.out.println();

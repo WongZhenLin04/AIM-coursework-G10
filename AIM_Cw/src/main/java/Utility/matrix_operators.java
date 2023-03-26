@@ -138,7 +138,7 @@ public class matrix_operators {
         return finalRes;
     }
 
-    public void countNumOfEdges(AdTuples_memes[][] ad){
+    public int countNumOfEdges(AdTuples_memes[][] ad){
         int count=0;
         for (int i = 0; i < ad.length; i++) {
             for (int j = 0; j < ad.length; j++) {
@@ -147,7 +147,7 @@ public class matrix_operators {
                 }
             }
         }
-        System.out.println(count);
+        return count;
     }
 
     //from an Ad matrix, get the edges
@@ -199,5 +199,21 @@ public class matrix_operators {
             }
         }
         return res;
+    }
+
+    public int[] getUniqueArray(int [] arr) {
+        LinkedHashSet<Integer> set = new LinkedHashSet<>();
+        for (int i = 0; i < arr.length; i++) {
+            set.add(arr[i]);
+        }
+        return set.stream().mapToInt(Number::intValue).toArray();
+    }
+
+    public int countUniqueElements(int[] arr) {
+        Set<Integer> uniqueElements = new HashSet<>();
+        for (int i = 0; i < arr.length; i++) {
+            uniqueElements.add(arr[i]);
+        }
+        return uniqueElements.size();
     }
 }
