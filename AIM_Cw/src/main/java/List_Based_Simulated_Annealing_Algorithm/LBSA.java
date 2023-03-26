@@ -158,7 +158,6 @@ public class LBSA {
                 m++;
                 int[] newSolution = genNewSol(currentSolution, substringSize);
 
-
                 double newFitness = evalFitness(newSolution);
                 Boolean is_new_picked = false;
 

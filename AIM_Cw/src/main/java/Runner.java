@@ -18,12 +18,12 @@ public class Runner {
         EAX eax = new EAX();
         matrix_operators matrix_operators = new matrix_operators();
         /*Memetic algorithm*/
-//        Meme meme = new Meme(30,4,40,20);
-//        int [] bestSol = meme.applyMemes();
-//        System.out.println(Arrays.toString(bestSol));
-//        System.out.println(evals.evalSol(bestSol));
-//
-//        System.out.println();
+        Meme meme = new Meme(30,4,40,20);
+        int [] bestSol = meme.applyMemes();
+        System.out.println(Arrays.toString(bestSol));
+        System.out.println(evals.evalSol(bestSol));
+
+        System.out.println();
 
         /*Ant Colony Optimization*/
         ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
@@ -32,7 +32,7 @@ public class Runner {
         double[][] distanceMatrix = matrix_operators.matrixDistancesBetweenCities(cities);
         AntColonyOptimization antColonyOptimization = new AntColonyOptimization(cities.size(), distanceMatrix);
         antColonyOptimization.displayBestSolution();
-        System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
+//        System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
 
         /*List Based Simulated Annealing*/
         int iterations = 10;
