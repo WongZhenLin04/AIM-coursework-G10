@@ -1,27 +1,26 @@
 package List_Based_Simulated_Annealing_Algorithm;
 
 public class CoolingSchedule {
-    private double initialTemperature;
+    private double temperature;
     private int iterations;
     private CoolingType coolingType;
 
-    public CoolingSchedule(double initialTemperature, int iteraitons, CoolingType coolingType){
-        this.initialTemperature = initialTemperature;
+    public CoolingSchedule(double initialTemperature, int iterations, CoolingType coolingType){
+        this.temperature = initialTemperature;
         this.iterations = iterations;
         this.coolingType = coolingType;
     }
 
     public double getTemperature(int iteration) {
-        double temperature;
         switch (coolingType) {
             case LINEAR:
-                temperature = initialTemperature - (iteration * initialTemperature / iterations);
+                temperature -= (iteration * temperature / iterations);
                 break;
             case EXPONENTIAL:
-                temperature = initialTemperature * Math.pow(0.95, iteration);
+                temperature *= Math.pow(0.95, iteration);
                 break;
             default:
-                temperature = initialTemperature * Math.exp(-iteration / (double) iterations);
+                temperature *= Math.exp(-iteration / (double) iterations);
                 break;
         }
         return temperature;
