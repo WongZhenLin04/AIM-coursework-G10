@@ -1,5 +1,7 @@
 import Ant_Colony_Optimization_Algorithm.ACOTestFrameConfig;
 import Ant_Colony_Optimization_Algorithm.AntColonyOptimization;
+import List_Based_Simulated_Annealing_Algorithm.CoolingSchedule;
+import List_Based_Simulated_Annealing_Algorithm.LBSA;
 import Memetic_Algorithm.EAX;
 import Memetic_Algorithm.Meme;
 import Utility.AdTuples_memes;
@@ -30,7 +32,25 @@ public class Runner {
         double[][] distanceMatrix = matrix_operators.matrixDistancesBetweenCities(cities);
         AntColonyOptimization antColonyOptimization = new AntColonyOptimization(cities.size(), distanceMatrix);
         antColonyOptimization.displayBestSolution();
-        System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
+//        System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
+
+        /*List Based Simulated Annealing*/
+        int iterations = 10;
+        int perturbationSize = 30;
+        int substringSize = 5;
+        int temperatureListLength = 2;
+        double initialAcceptanceProbability = 0.9;
+ //       CoolingSchedule coolingSchedule = new CoolingSchedule(0.99, iterations, CoolingSchedule.CoolingType.LINEAR);
+ //       LBSA lbsa = new LBSA(30,5,iterations,100, coolingSchedule);
+  //      lbsa.genInitial();
+        LBSA lbsa = new LBSA(perturbationSize, substringSize, iterations, temperatureListLength , initialAcceptanceProbability);
+        lbsa.displayBestSolution();
+//        System.out.println("Best Solution = "+ Arrays.toString(lbsa.getBestSolution()));
+//        System.out.println("Best Fitness = " + lbsa.getBestFitness());
+
+
+  //      System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
+
     }
 
     public void printMatrix(AdTuples_memes[][] ar){

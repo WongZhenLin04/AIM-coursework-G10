@@ -1,5 +1,7 @@
 package Ant_Colony_Optimization_Algorithm;
 
+import Utility.evals;
+
 import java.util.Random;
 
 public class AntColonyOptimization {
@@ -12,7 +14,7 @@ public class AntColonyOptimization {
     private double[][] distanceMatrix;
     private double[][] pheromoneMatrix;
     private ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
-
+    private double bestSolutionLength;
     public AntColonyOptimization(int numCities, double[][] distanceMatrix) {
         this.numOfAnts = acoTestFrameConfig.getNumOfAnts();
         this.alpha = acoTestFrameConfig.getAlpha();
@@ -70,10 +72,12 @@ public class AntColonyOptimization {
             System.out.printf("%d " , solution[i]+1);
         }
         System.out.println();
+        System.out.println("D = " + bestSolutionLength);
+        System.out.println();
     }
     public int[] findBestSolution(){
         int[] bestSolution = new int[numCities];
-        double bestSolutionLength = Double.MAX_VALUE;
+        bestSolutionLength = Double.MAX_VALUE;
         Random rand = new Random();
         for(int i = 0; i < numIterations; i++){
             Ant[] ants = new Ant[numOfAnts];
