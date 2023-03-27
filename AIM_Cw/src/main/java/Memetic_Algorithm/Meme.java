@@ -111,7 +111,12 @@ public class Meme {
             int[] randomConfig =genRandomisedCities();
             VNDHue vndHue=new VNDHue();
             int[]bestOne= vndHue.applyVHD(randomConfig,subStringSize);
-            res.add(bestOne);
+            if(!checkPresentInPop(res,bestOne)){
+                res.add(bestOne);
+            }
+            else{
+                i--;
+            }
             if((i+1) % 3 == 0) {
                 System.out.print("*");
             }
