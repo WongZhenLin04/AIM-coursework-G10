@@ -138,18 +138,6 @@ public class matrix_operators {
         return finalRes;
     }
 
-    public int countNumOfEdges(AdTuples_memes[][] ad){
-        int count=0;
-        for (int i = 0; i < ad.length; i++) {
-            for (int j = 0; j < ad.length; j++) {
-                if (ad[i][j].getDistance()!=Double.MAX_VALUE){
-                    count++;
-                }
-            }
-        }
-        return count;
-    }
-
     //from an Ad matrix, get the edges
     public List<edges_memes> getEdges(AdTuples_memes[][] ad){
         List<edges_memes> edges =new ArrayList<>();
@@ -161,30 +149,6 @@ public class matrix_operators {
             }
         }
         return edges;
-    }
-
-    //check if two matrices are equal
-    public boolean isEqualMatrices(AdTuples_memes[][]a1,AdTuples_memes[][] a2){
-        for (int i = 0; i < a1.length; i++) {
-            for (int j = 0; j < a1.length; j++) {
-                if((a1[i][j].getDistance()!=Double.MAX_VALUE && a2[i][j].getDistance()==Double.MAX_VALUE)||(a1[i][j].getDistance()==Double.MAX_VALUE && a2[i][j].getDistance()!=Double.MAX_VALUE)){
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
-    // check if a matrix is just empty
-    public boolean isEmpty(AdTuples_memes[][]a1){
-        for (int i = 0; i < a1.length; i++) {
-            for (int j = 0; j < a1.length; j++) {
-                if(a1[i][j].getDistance()!=Double.MAX_VALUE){
-                    return false;
-                }
-            }
-        }
-        return true;
     }
 
     //function to copy matrices of AdTuples
@@ -201,19 +165,4 @@ public class matrix_operators {
         return res;
     }
 
-    public int[] getUniqueArray(int [] arr) {
-        LinkedHashSet<Integer> set = new LinkedHashSet<>();
-        for (int i = 0; i < arr.length; i++) {
-            set.add(arr[i]);
-        }
-        return set.stream().mapToInt(Number::intValue).toArray();
-    }
-
-    public int countUniqueElements(int[] arr) {
-        Set<Integer> uniqueElements = new HashSet<>();
-        for (int i = 0; i < arr.length; i++) {
-            uniqueElements.add(arr[i]);
-        }
-        return uniqueElements.size();
-    }
 }

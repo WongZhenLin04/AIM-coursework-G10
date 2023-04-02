@@ -4,11 +4,11 @@ import List_Based_Simulated_Annealing_Algorithm.CoolingSchedule;
 import List_Based_Simulated_Annealing_Algorithm.LBSA;
 import Memetic_Algorithm.EAX;
 import Memetic_Algorithm.Meme;
-import Memetic_Algorithm.crossX;
-import Memetic_Algorithm.opt2;
-import Utility.*;
+import Utility.AdTuples_memes;
+import Utility.coordinates;
+import Utility.evals;
+import Utility.matrix_operators;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
