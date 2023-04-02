@@ -62,7 +62,7 @@ public class AntColonyOptimization {
            }
        }
     }
-    public void displayBestSolution(){
+    public void  displayBestSolution(){
         int[] solution = findBestSolution();
         System.out.println("Ant Colony Optimization Algorithm: ");
         System.out.printf("Parameter: numOfAnts = %d, alpha = %.1f, beta = %.1f, evalorationRate = %.1f ,numOfIterations = %d\n",

@@ -110,7 +110,7 @@ public class LBSA {
     private double evalFitness(int[] solution) {
         return evalFuncs.evalSol(solution);
     }
-
+/*
 //    public void runLBSA() {
 //        double currentTemperature = initialTemperature;
 //        for (int i = 0; i < iterations; i++) {
@@ -132,6 +132,8 @@ public class LBSA {
 //            currentTemperature = coolingSchedule.getTemperature(i);
 //        }
 //    }
+
+ */
     public double calculateBadResultAcceptanceProbability(double tmax, double currentFitness, double newFitness){
         return Math.exp(-(newFitness - currentFitness) / tmax);
     }
