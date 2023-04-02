@@ -11,6 +11,7 @@ import Utility.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class Runner {
     public static void main(String[] args){
@@ -35,18 +36,21 @@ public class Runner {
 //        System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
 
         /*List Based Simulated Annealing*/
+        Random rand = new Random();
         int iterations = 10;
         int perturbationSize = 30;
-        int substringSize = 5;
-        int temperatureListLength = 2;
-        double initialAcceptanceProbability = 0.9;
- //       CoolingSchedule coolingSchedule = new CoolingSchedule(0.99, iterations, CoolingSchedule.CoolingType.LINEAR);
- //       LBSA lbsa = new LBSA(30,5,iterations,100, coolingSchedule);
-  //      lbsa.genInitial();
+        int substringSize = 20;
+        int temperatureListLength = 5;
+        double initialAcceptanceProbability = rand.nextDouble(0.00000001, 1);
+//        CoolingSchedule coolingSchedule = new CoolingSchedule(0.99, iterations, CoolingSchedule.CoolingType.EXPONENTIAL);
+//        LBSA lbsa = new LBSA(30,5,iterations,100, coolingSchedule);
+ //       lbsa.displayBestSolution();
+//        lbsa.genInitial();
+//        lbsa.runLBSA();
         LBSA lbsa = new LBSA(perturbationSize, substringSize, iterations, temperatureListLength , initialAcceptanceProbability);
         lbsa.displayBestSolution();
-//        System.out.println("Best Solution = "+ Arrays.toString(lbsa.getBestSolution()));
-//        System.out.println("Best Fitness = " + lbsa.getBestFitness());
+        System.out.println("Best Solution = "+ Arrays.toString(lbsa.getBestSolution()));
+        System.out.println("Best Fitness = " + lbsa.getBestFitness());
 
 
   //      System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
