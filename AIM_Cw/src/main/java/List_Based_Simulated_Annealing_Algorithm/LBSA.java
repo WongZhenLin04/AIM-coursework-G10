@@ -87,6 +87,7 @@ public class LBSA {
         for (int i = 0; i < 107; i++) {
             res[i] = i;
         }
+
         return res;
     }
     /**
@@ -116,7 +117,7 @@ public class LBSA {
     private double evalFitness(int[] solution) {
         return evalFuncs.evalSol(solution);
     }
-
+/*
 //    public void runLBSA() {
 //
 //        double currentTemperature = initialTemperature;
@@ -141,6 +142,8 @@ public class LBSA {
 //        }
 //
 //    }
+
+ */
     public double calculateBadResultAcceptanceProbability(double tmax, double currentFitness, double newFitness){
         return Math.exp(-(newFitness - currentFitness) / tmax);
     }
@@ -184,7 +187,7 @@ public class LBSA {
                     System.out.println("Tmax = " + maxTemp);
                     double r = Math.random();
                     System.out.println("P = " + p + " , random = " + r);
-                    if(r > p){
+                    if(r < p){
                         System.out.println("T = " + t);
                         t = calculateNewTemperature(r, t, newFitness, currentFitness); // t = (t-delta)/ln(r)
                         System.out.println("New T = " + t);
