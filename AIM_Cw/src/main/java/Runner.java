@@ -39,9 +39,9 @@ public class Runner{
         //System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
 
         /*List Based Simulated Annealing*/
-        int iterations = 10;
+        int iterations = 1000;
         int perturbationSize = 30;
-        int substringSize = 5;
+        int substringSize = 2;
         int temperatureListLength = 2;
         double initialAcceptanceProbability = 0.9;
         /*

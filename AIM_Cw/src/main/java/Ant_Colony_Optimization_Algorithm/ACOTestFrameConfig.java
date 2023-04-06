@@ -6,7 +6,7 @@ public class ACOTestFrameConfig {
     private final int numOfAnts = 100;
 
     /* */
-    private final int numIterations = 30;
+    private final int numIterations = 1000;
 
     /* */
     private final double alpha = 1;
