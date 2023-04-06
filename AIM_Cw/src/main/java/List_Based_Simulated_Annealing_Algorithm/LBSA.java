@@ -82,7 +82,7 @@ public class LBSA {
         }
         return res;
     }
-    private int[] genCities(){
+    public int[] genCities(){
         int[] res = new int[107];
         for (int i = 0; i < 107; i++) {
             res[i] = i;
@@ -186,7 +186,7 @@ public class LBSA {
                     System.out.println("Tmax = " + maxTemp);
                     double r = Math.random();
                     System.out.println("P = " + p + " , random = " + r);
-                    if(r > p){
+                    if(r < p){
                         System.out.println("T = " + t);
                         t = calculateNewTemperature(r, t, newFitness, currentFitness); // t = (t-delta)/ln(r)
                         System.out.println("New T = " + t);

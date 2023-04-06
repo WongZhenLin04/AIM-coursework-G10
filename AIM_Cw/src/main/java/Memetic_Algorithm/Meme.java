@@ -31,7 +31,11 @@ public class Meme {
 
     public int[] applyMemes(){
         System.out.println("Initialising...");
-        List<int[]> population=genInitial();
+        //List<int[]> population=genInitial();
+        List<int[]> population=new ArrayList<>();
+        for (int i = 0; i < populationSize; i++) {
+            population.add(genRandomisedCities());
+        }
         System.out.println("Initialised!");
         int[] bestSol = eax.pickBest(population);
         int notImproved =0;
@@ -41,6 +45,9 @@ public class Meme {
         while (notImproved<=tolerance){
             List<int[]> parents = selectRandom(population);
             List<int[]> offSprings = eax.applyEax(parents.get(0),parents.get(1));
+            if (offSprings.isEmpty()){
+                continue;
+            }
             //parameter of 1 good offspring so just choose the best one
             int[] bestOffspring = eax.pickBest(offSprings);
             VNDHue vndHue=new VNDHue();

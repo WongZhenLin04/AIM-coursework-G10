@@ -7,47 +7,17 @@ import Utility.AdTuples_memes;
 import Utility.coordinates;
 import Utility.evals;
 import Utility.matrix_operators;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.chart.LineChart;
-import javafx.scene.chart.NumberAxis;
-import javafx.scene.chart.XYChart;
-import javafx.stage.Stage;
-import javafx.application.Application;
+import plotting.plotGraph;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
+import java.awt.*;
+import javax.swing.*;
+import java.awt.geom.Line2D;
 
-public class Runner extends Application{
-    static int[] solutionToDisplay;
-    coordinates coords = new coordinates();
 
-    @Override
-    public void start(Stage stage) throws Exception {
-        List<Double> coordsX=new ArrayList<>();
-        List<Double> coordsY=new ArrayList<>();
-        List<String> stringCoords = coords.getCoordsList();
-        for (String coord: stringCoords) {
-            coordsX.add(coords.turnCoordsToDob(coord)[0]);
-            coordsY.add(coords.turnCoordsToDob(coord)[1]);
-        }
-        NumberAxis x = new NumberAxis(Collections.min(coordsX,null)-1000, Collections.max(coordsX,null)+1000,10);
-        NumberAxis y = new NumberAxis(Collections.min(coordsY,null)-1000, Collections.max(coordsY,null)+1000, 10);
-        LineChart linechart = new LineChart(x, y);
-        XYChart.Series series = new XYChart.Series();
-        for (int i = 0; i < solutionToDisplay.length; i++) {
-            series.getData().add(new XYChart.Data(coordsX.get(solutionToDisplay[i]),coordsY.get(solutionToDisplay[i])));
-        }
-        linechart.getData().add(series);
-        Group root = new Group(linechart);
-        Scene scene = new Scene(root, 600, 400);
-        stage.setScene(scene);
-        stage.show();
-    }
-
+public class Runner{
     public static void main(String[] args) {
         evals evals = new evals();
         EAX eax = new EAX();
@@ -86,8 +56,19 @@ public class Runner extends Application{
         System.out.println("Best Fitness = " + lbsa.getBestFitness());
         System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
         */
-        solutionToDisplay = bestSol;
-        launch(args);
+        // creating object of JFrame(Window popup)
+        JFrame window = new JFrame();
+
+        // setting closing operation
+        window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        // setting size of the pop window
+        window.setBounds(30, 30, 2000, 2000);
+        // setting canvas for draw
+        window.getContentPane().add(new plotGraph(bestSol));
+
+        // set visibility
+        window.setVisible(true);
     }
 
     public void printMatrix(AdTuples_memes[][] ar){

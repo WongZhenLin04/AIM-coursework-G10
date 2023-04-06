@@ -38,8 +38,8 @@ public class EAX {
 
     //from a list of offsprings, pick the best offspring
     public int[] pickBest(List<int[]> offSprings) {
-        int[] bestTour = null;
-        double bestScore = Double.MAX_VALUE;
+        int[] bestTour = offSprings.get(0);
+        double bestScore = evals.evalSol(bestTour);
         for (int[] ints : offSprings) {
             double currentScore = evals.evalSol(ints);
             if (currentScore < bestScore) {
