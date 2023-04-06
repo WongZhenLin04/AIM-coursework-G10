@@ -15,6 +15,7 @@ public class AntColonyOptimization {
     private double[][] pheromoneMatrix;
     private ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
     private double bestSolutionLength;
+    private int[] bestSolution;
     public AntColonyOptimization(int numCities, double[][] distanceMatrix) {
         this.numOfAnts = acoTestFrameConfig.getNumOfAnts();
         this.alpha = acoTestFrameConfig.getAlpha();
@@ -92,7 +93,12 @@ public class AntColonyOptimization {
             }
             updatePheromones(ants);
         }
-
+        for(int i = 0; i < bestSolution.length; i++){
+            System.out.printf("%d " , bestSolution[i]+1);
+        }
+        System.out.println();
+        System.out.println("D = " + bestSolutionLength);
+        System.out.println();
         return bestSolution;
     }
     public void updatePheromones(Ant[] ants){

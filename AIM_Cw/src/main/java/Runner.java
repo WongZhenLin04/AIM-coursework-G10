@@ -7,6 +7,7 @@ import Utility.AdTuples_memes;
 import Utility.coordinates;
 import Utility.evals;
 import Utility.matrix_operators;
+//import com.google.inject.Stage;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.chart.LineChart;
@@ -53,19 +54,19 @@ public class Runner extends Application{
         EAX eax = new EAX();
         matrix_operators matrix_operators = new matrix_operators();
         /*Memetic algorithm*/
-<<<<<<< HEAD
+
 //        Meme meme = new Meme(30,4,40,20);
 //        int [] bestSol = meme.applyMemes();
 //        System.out.println(Arrays.toString(bestSol));
 //        System.out.println(evals.evalSol(bestSol));
 
-=======
+//
         Meme meme = new Meme(30,4,40,20);
         int [] bestSol = meme.applyMemes();
         System.out.println(Arrays.toString(bestSol));
         System.out.println(evals.evalSol(bestSol));
->>>>>>> 27332c5ea6df0073c859618a64d2a840d057f7b3
-        System.out.println();
+
+//        System.out.println();
 
         /*Ant Colony Optimization*/
         ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
@@ -73,13 +74,13 @@ public class Runner extends Application{
         List<String> cities = coordinates.getCoordsList();
         double[][] distanceMatrix = matrix_operators.matrixDistancesBetweenCities(cities);
         AntColonyOptimization antColonyOptimization = new AntColonyOptimization(cities.size(), distanceMatrix);
-        //antColonyOptimization.displayBestSolution();
+        antColonyOptimization.displayBestSolution();
         //System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
 
         /*List Based Simulated Annealing*/
-        int iterations = 10;
+        int iterations = 1000;
         int perturbationSize = 30;
-        int substringSize = 5;
+        int substringSize = 2;
         int temperatureListLength = 2;
         double initialAcceptanceProbability = 0.9;
         /*
@@ -94,7 +95,8 @@ public class Runner extends Application{
         System.out.println("Best Fitness = " + lbsa.getBestFitness());
         System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
         */
-        solutionToDisplay = bestSol;
+        //solutionToDisplay = bestSol;
+        solutionToDisplay = lbsa.getBestSolution();
         launch(args);
     }
 
