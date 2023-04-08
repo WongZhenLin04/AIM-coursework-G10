@@ -30,6 +30,9 @@ public class EAX {
         //use greedy approach to get the shortest path
         //offSprings
         List<int[]> offSpring = new ArrayList<>();
+        if(interSet.isEmpty()){
+            return offSpring;
+        }
         for (int i = 0; i < interSet.size(); i++) {
             offSpring.add(construction(interSet.get(i)));
         }

@@ -30,6 +30,9 @@ public class Meme {
     }
 
     public int[] applyMemes(){
+        int x=0;
+        List<Integer> X=new ArrayList<>();
+        List<Double> Y=new ArrayList<>();
         System.out.println("Initialising...");
         //List<int[]> population=genInitial();
         List<int[]> population=new ArrayList<>();
@@ -44,14 +47,39 @@ public class Meme {
         int replace=1;
         while (notImproved<=tolerance){
             List<int[]> parents = selectRandom(population);
-            List<int[]> offSprings = eax.applyEax(parents.get(0),parents.get(1));
-            if (offSprings.isEmpty()){
+            if(matrixOperators.countUnique(parents.get(0))!=107){
+                parents.set(0,genRandomisedCities());
+            }
+            if(matrixOperators.countUnique(parents.get(1))!=107){
+                parents.set(1,genRandomisedCities());
+            }
+            System.out.println(Arrays.toString(parents.get(0)));
+            System.out.println(Arrays.toString(parents.get(1)));
+            List<int[]> offSprings;
+
+            try{
+                offSprings = eax.applyEax(parents.get(0),parents.get(1));
+            }catch (IndexOutOfBoundsException e){
+                System.out.println("Haha");
+                resetPop(population);
                 continue;
             }
+
+            if(offSprings.isEmpty()){
+                System.out.println("Hello");
+                resetPop(population);
+                continue;
+            }
+
             //parameter of 1 good offspring so just choose the best one
-            int[] bestOffspring = eax.pickBest(offSprings);
-            VNDHue vndHue=new VNDHue();
-            int[] improvedOffspring = vndHue.applyVHD(bestOffspring,subStringSize);
+            List<int[]> appliedVHD = new ArrayList<>();
+            for (int i = 0; i < offSprings.size(); i++) {
+                VNDHue vndHue=new VNDHue();
+                System.out.print(i);
+                appliedVHD.add(vndHue.applyVHD(offSprings.get(i),subStringSize));
+            }
+            System.out.println();
+            int[] bestOffspring = eax.pickBest(appliedVHD);
 
             if(replace==20){
                 //select worst 20 and replace
@@ -64,16 +92,28 @@ public class Meme {
                 replace++;
             }
 
-            if(evals.evalSol(improvedOffspring)<evals.evalSol(bestSol)){
-                bestSol = improvedOffspring;
+            if(evals.evalSol(bestOffspring)<evals.evalSol(bestSol)){
+                bestSol = bestOffspring;
             }
             else{
                 notImproved++;
             }
-            System.out.print("*");
+            System.out.println(notImproved);
+            Y.add(evals.evalSol(bestSol));
+            X.add(x);
+            x++;
         }
+        System.out.println();
         System.out.println("Training done!");
+        System.out.println(Arrays.toString(X.toArray()));
+        System.out.println(Arrays.toString(Y.toArray()));
         return bestSol;
+    }
+
+    public void resetPop(List<int[]> Pop){
+        for (int i = 0; i < Pop.size(); i++) {
+            Pop.set(i,genRandomisedCities());
+        }
     }
 
     //function that selects the worst solutions for a population specified by the generation size  and replaces them
