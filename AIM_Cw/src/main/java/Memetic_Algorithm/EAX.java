@@ -183,7 +183,7 @@ public class EAX {
     public List<int[]> findABCycles(AdTuples_memes[][] combined){
         List<Integer> cycle= new ArrayList<>();
         List<int[]> ABCycles=new ArrayList<>();
-        int max=0;
+        int resets = 0;
         //repeat until all nodes been visited(will have break statement for that)
         while(true){
             //random start point
@@ -216,6 +216,7 @@ public class EAX {
                 connectingEdge = findNeighbour(combined[connectingEdge.getTo()],connectingEdge.getTo(),name);
                 if (connectingEdge.getFrom()==-1||connectingEdge.getTo()==-1){
                     //reset combined
+                    resets++;
                     resetVisited(combined,cycle);
                     cycle.clear();
                     break;
@@ -229,7 +230,9 @@ public class EAX {
                 combined[connectingEdge.getFrom()][connectingEdge.getTo()].setVisited(true);
                 cycle.add(connectingEdge.getTo());
             }
-            max++;
+            if(resets==1000){
+                break;
+            }
         }
         return ABCycles;
     }

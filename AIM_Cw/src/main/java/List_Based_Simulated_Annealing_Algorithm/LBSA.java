@@ -216,7 +216,6 @@ public class LBSA {
                 if (newFitness < currentFitness) {
                     solution = newSolution;
                     is_new_picked = true;
-                    is_new_picked = true;
                 } else {
                     maxTemp = Collections.max(temperatureList);
                     double p = calculateBadResultAcceptanceProbability(Collections.max(temperatureList), currentFitness, newFitness);

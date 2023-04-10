@@ -23,11 +23,13 @@ public class Runner{
         EAX eax = new EAX();
         matrix_operators matrix_operators = new matrix_operators();
         /*Memetic algorithm*/
-        Meme meme = new Meme(30,4,400,20);
+
+        Meme meme = new Meme(30,4,100,20);
         int [] bestSol = meme.applyMemes();
         System.out.println(Arrays.toString(bestSol));
         System.out.println(evals.evalSol(bestSol));
         System.out.println();
+
 
         /*Ant Colony Optimization*/
         ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
@@ -65,7 +67,7 @@ public class Runner{
         // setting size of the pop window
         window.setBounds(30, 30, 2000, 2000);
         // setting canvas for draw
-        window.getContentPane().add(new plotGraph(bestSol));
+        //window.getContentPane().add(new plotGraph(bestSol));
 
         // set visibility
         window.setVisible(true);
