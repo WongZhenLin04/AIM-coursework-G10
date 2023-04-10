@@ -24,7 +24,7 @@ public class Runner{
         matrix_operators matrix_operators = new matrix_operators();
         /*Memetic algorithm*/
 
-        Meme meme = new Meme(30,4,100,20);
+        Meme meme = new Meme(30,4,4000,20);
         int [] bestSol = meme.applyMemes();
         System.out.println(Arrays.toString(bestSol));
         System.out.println(evals.evalSol(bestSol));

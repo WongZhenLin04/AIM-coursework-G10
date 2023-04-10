@@ -12,9 +12,8 @@ public class Meme {
     private final int populationSize;
     private final int subStringSize;
     private final EAX eax;
-    private int tolerance;
-    private int generationSize;
-    private VNDHue vndHue;
+    private final int tolerance;
+    private final opt2 opt2;
     private final evals evals;
     private final matrix_operators matrixOperators;
 
@@ -23,10 +22,9 @@ public class Meme {
         this.subStringSize=subStringSize;
         this.eax=new EAX();
         this.tolerance = tolerance;
-        this.vndHue=new VNDHue();
         this.evals =new evals();
-        this.generationSize=generationsSize;
         this.matrixOperators=new matrix_operators();
+        this.opt2=new opt2();
     }
 
     public int[] applyMemes(){
@@ -34,7 +32,6 @@ public class Meme {
         List<Integer> X=new ArrayList<>();
         List<Double> Y=new ArrayList<>();
         System.out.println("Initialising...");
-        //List<int[]> population=genInitial();
         List<int[]> population=new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {
             population.add(genRandomisedCities());
@@ -55,6 +52,7 @@ public class Meme {
             }
             System.out.println(Arrays.toString(parents.get(0)));
             System.out.println(Arrays.toString(parents.get(1)));
+            System.out.println(evals.evalSol(bestSol));
             List<int[]> offSprings;
 
             try{
@@ -72,14 +70,9 @@ public class Meme {
             }
 
             //parameter of 1 good offspring so just choose the best one
-            List<int[]> appliedVHD = new ArrayList<>();
-            for (int i = 0; i < offSprings.size(); i++) {
-                VNDHue vndHue=new VNDHue();
-                System.out.print(i);
-                appliedVHD.add(vndHue.applyVHD(offSprings.get(i),subStringSize));
-            }
             System.out.println();
-            int[] bestOffspring = eax.pickBest(appliedVHD);
+            int[] bestOffspring = eax.pickBest(offSprings);
+            bestOffspring = opt2.apply2OptAlgo(bestOffspring);
 
             if(replace==20){
                 //select worst 20 and replace
@@ -148,28 +141,6 @@ public class Meme {
         parents.add(population.get(parent1));
         parents.add(population.get(parent2));
         return parents;
-    }
-
-    //randomly generate a population
-    public List<int[]> genInitial(){
-        List<int[]> res = new ArrayList<>();
-        for(int i=0;i<populationSize;i++){
-            //perform VND on each city
-            int[] randomConfig =genRandomisedCities();
-            VNDHue vndHue=new VNDHue();
-            int[]bestOne= vndHue.applyVHD(randomConfig,subStringSize);
-            if(!checkPresentInPop(res,bestOne)){
-                res.add(bestOne);
-            }
-            else{
-                i--;
-            }
-            if((i+1) % 3 == 0) {
-                System.out.print("*");
-            }
-        }
-        System.out.println();
-        return res;
     }
 
     public int[] genRandomisedCities(){

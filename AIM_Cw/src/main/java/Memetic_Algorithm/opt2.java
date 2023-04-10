@@ -11,6 +11,18 @@ public class opt2 {
         this.eval=new evals();
     }
 
+    public int[] apply2OptAlgo(int[] cities){
+        int[] sol1=twoOpt(cities);
+        while(true) {
+            double evaluated=eval.evalSol(sol1);
+            sol1=twoOpt(sol1);
+            if(evaluated== eval.evalSol(sol1)){
+                break;
+            }
+        }
+        return sol1;
+    }
+
     //perform Opt-2 optimisation until we hit a local optima
     public int[] twoOpt(int[] cities) {
         int size = cities.length;
