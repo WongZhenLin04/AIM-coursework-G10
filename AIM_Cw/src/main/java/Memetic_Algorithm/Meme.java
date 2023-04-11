@@ -10,21 +10,23 @@ import java.util.Random;
 
 public class Meme {
     private final int populationSize;
-    private final int subStringSize;
     private final EAX eax;
     private final int tolerance;
-    private final opt2 opt2;
+    private final crossX crossX;
     private final evals evals;
     private final matrix_operators matrixOperators;
+    private final int generationsSize;
+    private final int substringSize;
 
-    public Meme(int populationSize,int subStringSize, int tolerance,int generationsSize){
+    public Meme(int populationSize, int tolerance, int generationsSize, int substringSize){
         this.populationSize=populationSize;
-        this.subStringSize=subStringSize;
         this.eax=new EAX();
         this.tolerance = tolerance;
         this.evals =new evals();
         this.matrixOperators=new matrix_operators();
-        this.opt2=new opt2();
+        this.crossX=new crossX();
+        this.generationsSize=generationsSize;
+        this.substringSize=substringSize;
     }
 
     public int[] applyMemes(){
@@ -70,11 +72,15 @@ public class Meme {
             }
 
             //parameter of 1 good offspring so just choose the best one
+            List<int[]> appliedCross = new ArrayList<>();
+            for (int i = 0; i < offSprings.size(); i++) {
+                System.out.print(i);
+                appliedCross.add(crossX.findBestSol(offSprings.get(i),substringSize,true));
+            }
             System.out.println();
-            int[] bestOffspring = eax.pickBest(offSprings);
-            bestOffspring = opt2.apply2OptAlgo(bestOffspring);
+            int[] bestOffspring = eax.pickBest(appliedCross);
 
-            if(replace==20){
+            if(replace==generationsSize){
                 //select worst 20 and replace
                 replaceWorst(population,generation);
                 generation.clear();

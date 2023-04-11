@@ -12,6 +12,18 @@ public class crossX {
         this.evalFuncs=new evals();
     }
 
+    public int[] findBestSol(int[] cities, int windowSize,boolean rev){
+        int[] sol2 = cities;
+        while(true) {
+            double evaluated=evalFuncs.evalSol(sol2);
+            sol2=applyCross(sol2,windowSize,rev);
+            if(evaluated== evalFuncs.evalSol(sol2)){
+                break;
+            }
+        }
+        return sol2;
+    }
+    
     //type 1: normal, type 2: reverse
     public int[] applyCross(int[] cities, int windowSize,boolean rev){
         int[] bestConfig = cities;

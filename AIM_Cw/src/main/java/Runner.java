@@ -7,14 +7,11 @@ import Utility.AdTuples_memes;
 import Utility.coordinates;
 import Utility.evals;
 import Utility.matrix_operators;
-import plotting.plotGraph;
 
 import java.util.Arrays;
 import java.util.List;
 
-import java.awt.*;
 import javax.swing.*;
-import java.awt.geom.Line2D;
 
 
 public class Runner{
@@ -24,7 +21,7 @@ public class Runner{
         matrix_operators matrix_operators = new matrix_operators();
         /*Memetic algorithm*/
 
-        Meme meme = new Meme(30,4,4000,20);
+        Meme meme = new Meme(30, 4000,20,4);
         int [] bestSol = meme.applyMemes();
         System.out.println(Arrays.toString(bestSol));
         System.out.println(evals.evalSol(bestSol));
