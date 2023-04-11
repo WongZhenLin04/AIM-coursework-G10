@@ -3,6 +3,7 @@ import Ant_Colony_Optimization_Algorithm.AntColonyOptimization;
 import List_Based_Simulated_Annealing_Algorithm.LBSA;
 import Memetic_Algorithm.EAX;
 import Memetic_Algorithm.Meme;
+import Memetic_Algorithm.crossX;
 import Utility.AdTuples_memes;
 import Utility.coordinates;
 import Utility.evals;
@@ -17,7 +18,6 @@ import javax.swing.*;
 public class Runner{
     public static void main(String[] args) {
         evals evals = new evals();
-        EAX eax = new EAX();
         matrix_operators matrix_operators = new matrix_operators();
         /*Memetic algorithm*/
 
@@ -26,7 +26,6 @@ public class Runner{
         System.out.println(Arrays.toString(bestSol));
         System.out.println(evals.evalSol(bestSol));
         System.out.println();
-
 
         /*Ant Colony Optimization*/
         ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();

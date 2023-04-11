@@ -12,7 +12,6 @@ public class Meme {
     private final int populationSize;
     private final EAX eax;
     private final int tolerance;
-    private final crossX crossX;
     private final evals evals;
     private final matrix_operators matrixOperators;
     private final int generationsSize;
@@ -24,7 +23,6 @@ public class Meme {
         this.tolerance = tolerance;
         this.evals =new evals();
         this.matrixOperators=new matrix_operators();
-        this.crossX=new crossX();
         this.generationsSize=generationsSize;
         this.substringSize=substringSize;
     }
@@ -75,6 +73,7 @@ public class Meme {
             List<int[]> appliedCross = new ArrayList<>();
             for (int i = 0; i < offSprings.size(); i++) {
                 System.out.print(i);
+                crossX crossX = new crossX();
                 appliedCross.add(crossX.findBestSol(offSprings.get(i),substringSize,true));
             }
             System.out.println();

@@ -17,7 +17,7 @@ public class crossX {
         while(true) {
             double evaluated=evalFuncs.evalSol(sol2);
             sol2=applyCross(sol2,windowSize,rev);
-            if(evaluated== evalFuncs.evalSol(sol2)){
+            if(evaluated== evalFuncs.evalSol(sol2)) {
                 break;
             }
         }
