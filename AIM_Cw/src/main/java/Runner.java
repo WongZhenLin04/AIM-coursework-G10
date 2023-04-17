@@ -21,11 +21,11 @@ public class Runner{
         matrix_operators matrix_operators = new matrix_operators();
         /*Memetic algorithm*/
 
-        Meme meme = new Meme(30, 4000,20,4);
-        int [] bestSol = meme.applyMemes();
-        System.out.println(Arrays.toString(bestSol));
-        System.out.println(evals.evalSol(bestSol));
-        System.out.println();
+//        Meme meme = new Meme(30, 4000,20,4);
+//        int [] bestSol = meme.applyMemes();
+//        System.out.println(Arrays.toString(bestSol));
+//        System.out.println(evals.evalSol(bestSol));
+//        System.out.println();
 
         /*Ant Colony Optimization*/
         ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
