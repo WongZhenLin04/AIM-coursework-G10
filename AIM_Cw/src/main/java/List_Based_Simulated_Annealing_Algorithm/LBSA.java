@@ -108,11 +108,11 @@ public class LBSA {
      * @param substringSize
      * @return
      */
-    public int[] genNewSol(int[] sol, int substringSize) {
+    public int[] genNewSol(int[] sol) {
         int[] newSol = sol.clone();
         Random rand = new Random();
-        int start = rand.nextInt(1,newSol.length - substringSize + 1);
-        int end = start + substringSize - 1;
+        int start = rand.nextInt(1,newSol.length-1);
+        int end = rand.nextInt(start,newSol.length-1);
         while (end > start) {
             int temp = newSol[start];
             newSol[start] = newSol[end];
@@ -210,7 +210,7 @@ public class LBSA {
                 int[] currentSolution = solution;
 //                System.out.println("Current Solution: " + Arrays.toString(currentSolution));
                 currentFitness = evalFitness(currentSolution);
-                int[] newSolution = genNewSol(currentSolution, substringSize);
+                int[] newSolution = genNewSol(currentSolution);
 //                int[] newSolution = genSwapNewSol(currentSolution);
 //                System.out.println("New Solution: " + Arrays.toString(newSolution));
                 double newFitness = evalFitness(newSolution);
@@ -266,7 +266,7 @@ public class LBSA {
         int[] currentSolution = getBestSolution();
 
         for (int i = 0; i < temperatureListLength; i++) {
-            int[] newSolution = genNewSol(currentSolution, substringSize);
+            int[] newSolution = genNewSol(currentSolution);
 //            int[] newSolution = genSwapNewSol(currentSolution);
             double currentFitness = evalFitness(currentSolution);
             double newFitness = evalFitness(newSolution);

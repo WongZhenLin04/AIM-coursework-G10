@@ -31,7 +31,7 @@ class LBSATest {
         }
 
         LBSA lbsa = new LBSA();
-        int[] newSolution = lbsa.genNewSol(cities, 2);
+        int[] newSolution = lbsa.genNewSol(cities);
         for(int i = 0; i < size; i++){
             System.out.print(newSolution[i] + " ");
         }

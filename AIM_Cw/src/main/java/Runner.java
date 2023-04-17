@@ -41,7 +41,7 @@ public class Runner{
         int perturbationSize = 10;
         int substringSize = 2;
         int temperatureListLength = 2;
-        double initialAcceptanceProbability = 0.4;
+        double initialAcceptanceProbability = 0.9;
         /*
         CoolingSchedule coolingSchedule = new CoolingSchedule(0.99, iterations, CoolingSchedule.CoolingType.LINEAR);
         LBSA lbsa = new LBSA(30,5,iterations,100, coolingSchedule);
