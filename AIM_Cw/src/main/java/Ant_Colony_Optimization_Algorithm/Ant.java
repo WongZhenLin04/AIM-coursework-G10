@@ -54,6 +54,7 @@ public class Ant {
         // Return to the starting city , from last city to starting
         tourLength += distanceMatrix[tour[numCities-1]][tour[0]];
         currentPosition = tour[0];
+        tour[tour.length-1] = currentPosition;
     }
 
     // Choose the next city by using probabilistic rule
