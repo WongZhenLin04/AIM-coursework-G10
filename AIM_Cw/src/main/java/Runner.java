@@ -33,7 +33,7 @@ public class Runner{
         List<String> cities = coordinates.getCoordsList();
         double[][] distanceMatrix = matrix_operators.matrixDistancesBetweenCities(cities);
         AntColonyOptimization antColonyOptimization = new AntColonyOptimization(cities.size(), distanceMatrix);
-        //antColonyOptimization.displayBestSolution();
+        antColonyOptimization.displayBestSolution();
         //System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
 
         /*List Based Simulated Annealing*/
