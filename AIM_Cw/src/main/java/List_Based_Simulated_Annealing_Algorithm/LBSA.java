@@ -89,14 +89,16 @@ public class LBSA {
     }
 
     private int[] genCities() {
-        int[] res = new int[107];
+        int[] res = new int[108];
         for (int i = 0; i < 107; i++) {
             res[i] = i;
         }
-
         return res;
     }
-
+    private int[] generateIntialSolution(){
+        bestSolution = genCities();
+        return bestSolution;
+    }
     /**
      * Generate Solution based on Inverse Operator
      * 1 2 3 4 5 -> (i = 1 , j = 4) -> 1 5 3 4 2 ->  1 5 4 3 2
@@ -109,7 +111,7 @@ public class LBSA {
     public int[] genNewSol(int[] sol, int substringSize) {
         int[] newSol = sol.clone();
         Random rand = new Random();
-        int start = rand.nextInt(newSol.length - substringSize + 1);
+        int start = rand.nextInt(1,newSol.length - substringSize + 1);
         int end = start + substringSize - 1;
         while (end > start) {
             int temp = newSol[start];
@@ -135,8 +137,8 @@ public class LBSA {
 
         // make sure i and j diffrent random numbers
         do {
-            i = rand.nextInt(0, sol.length - 1);
-            j = rand.nextInt(0, sol.length - 1);
+            i = rand.nextInt(1, sol.length - 2);
+            j = rand.nextInt(1, sol.length - 2);
         } while (i == j);
 
         int temp = newSol[i];
@@ -188,10 +190,11 @@ public class LBSA {
 
     public void runLBSA() {
         // produce initial temperature list
+        generateIntialSolution();
         List<Double> temperatureList = createInitialTemperatureList(temperatureListLength, initialAcceptanceProbability);
         double maxTemp = Collections.max(temperatureList);
         List<int[]> evaluationResultList = new ArrayList<>();
-        int[] solution = genCities();
+        int[] solution = getBestSolution();
         double currentFitness = 0;
         int k = 0;
 
@@ -209,26 +212,26 @@ public class LBSA {
                 currentFitness = evalFitness(currentSolution);
                 int[] newSolution = genNewSol(currentSolution, substringSize);
 //                int[] newSolution = genSwapNewSol(currentSolution);
-//                System.out.println("New Solution: " + Arrays.toString(newSolution));
+                System.out.println("New Solution: " + Arrays.toString(newSolution));
                 double newFitness = evalFitness(newSolution);
                 Boolean is_new_picked = false;
-//                System.out.println("Curent fitness = " + currentFitness + " , new finess = " + newFitness);
+                System.out.println("Curent fitness = " + currentFitness + " , new finess = " + newFitness);
                 if (newFitness < currentFitness) {
                     solution = newSolution;
                     is_new_picked = true;
                 } else {
                     maxTemp = Collections.max(temperatureList);
                     double p = calculateBadResultAcceptanceProbability(Collections.max(temperatureList), currentFitness, newFitness);
-//                    System.out.println("Tmax = " + Collections.max(temperatureList));
+                    System.out.println("Tmax = " + Collections.max(temperatureList));
                     double r = Math.random();
-//                    System.out.println("P = " + p + " , random = " + r);
+                    System.out.println("P = " + p + " , random = " + r);
                     if (r < p) {
 //                        System.out.println("T = " + t);
                         t = calculateNewTemperature(r, t, currentFitness, newFitness); // t = (t-delta)/ln(r)
-//                        System.out.println("New T = " + t);
+                        System.out.println("New T = " + t);
                         temperatureList.remove(Collections.max(temperatureList));
                         temperatureList.add(t);
-//                        System.out.println("temperature list size = " + temperatureList.size());
+                        System.out.println("temperature list size = " + temperatureList.size());
                         //  temperatureList.set(temperatureList.indexOf(maxTemp), t);
                         solution = newSolution;
                         is_new_picked = true;
@@ -249,8 +252,10 @@ public class LBSA {
             }
 
         }
+        /* After find best solution, go back to the starting point */
+        solution[107] = solution[0];
         bestSolution = solution;
-        bestFitness = currentFitness;
+        bestFitness = evalFitness(solution);
     }
 
     public List<Double> createInitialTemperatureList(int temperatureListLength, double intialAcceptanceProbability) {
@@ -258,7 +263,7 @@ public class LBSA {
         // generate initial solution x randomly
 
 
-        int[] currentSolution = genCities();
+        int[] currentSolution = getBestSolution();
 
         for (int i = 0; i < temperatureListLength; i++) {
             int[] newSolution = genNewSol(currentSolution, substringSize);
