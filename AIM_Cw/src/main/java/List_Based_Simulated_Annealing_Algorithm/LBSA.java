@@ -62,7 +62,7 @@ public class LBSA {
         );
         runLBSA();
         System.out.println("Best Solution = " + Arrays.toString(this.getBestSolution()));
-        System.out.println("Best Fitness = " + evalFitness(this.getBestSolution()));
+        System.out.println("Best Fitness = " +getBestFitness());
     }
 
     // generates the initial solution
@@ -212,26 +212,26 @@ public class LBSA {
                 currentFitness = evalFitness(currentSolution);
                 int[] newSolution = genNewSol(currentSolution, substringSize);
 //                int[] newSolution = genSwapNewSol(currentSolution);
-                System.out.println("New Solution: " + Arrays.toString(newSolution));
+//                System.out.println("New Solution: " + Arrays.toString(newSolution));
                 double newFitness = evalFitness(newSolution);
                 Boolean is_new_picked = false;
-                System.out.println("Curent fitness = " + currentFitness + " , new finess = " + newFitness);
+//                System.out.println("Curent fitness = " + currentFitness + " , new finess = " + newFitness);
                 if (newFitness < currentFitness) {
                     solution = newSolution;
                     is_new_picked = true;
                 } else {
                     maxTemp = Collections.max(temperatureList);
                     double p = calculateBadResultAcceptanceProbability(Collections.max(temperatureList), currentFitness, newFitness);
-                    System.out.println("Tmax = " + Collections.max(temperatureList));
+//                    System.out.println("Tmax = " + Collections.max(temperatureList));
                     double r = Math.random();
-                    System.out.println("P = " + p + " , random = " + r);
+//                    System.out.println("P = " + p + " , random = " + r);
                     if (r < p) {
 //                        System.out.println("T = " + t);
                         t = calculateNewTemperature(r, t, currentFitness, newFitness); // t = (t-delta)/ln(r)
-                        System.out.println("New T = " + t);
+//                        System.out.println("New T = " + t);
                         temperatureList.remove(Collections.max(temperatureList));
                         temperatureList.add(t);
-                        System.out.println("temperature list size = " + temperatureList.size());
+//                        System.out.println("temperature list size = " + temperatureList.size());
                         //  temperatureList.set(temperatureList.indexOf(maxTemp), t);
                         solution = newSolution;
                         is_new_picked = true;
@@ -253,9 +253,9 @@ public class LBSA {
 
         }
         /* After find best solution, go back to the starting point */
-        solution[107] = solution[0];
+        solution[solution.length-1] = solution[0];
         bestSolution = solution;
-        bestFitness = evalFitness(solution);
+        bestFitness = currentFitness;
     }
 
     public List<Double> createInitialTemperatureList(int temperatureListLength, double intialAcceptanceProbability) {
