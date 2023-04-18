@@ -15,7 +15,7 @@ class LBSATest {
         }
 
         LBSA lbsa = new LBSA();
-        int[] newSolution = lbsa.genSwapNewSol(cities);
+        int[] newSolution = lbsa.genHybridNewSol(cities);
         for(int i = 0; i < size; i++){
             System.out.print(newSolution[i] + " ");
         }
@@ -31,7 +31,7 @@ class LBSATest {
         }
 
         LBSA lbsa = new LBSA();
-        int[] newSolution = lbsa.genNewSol(cities);
+        int[] newSolution = lbsa.genHybridNewSol(cities);
         for(int i = 0; i < size; i++){
             System.out.print(newSolution[i] + " ");
         }
@@ -46,5 +46,33 @@ class LBSATest {
         double newFitness = 62512.668992625724;
         double p = lbsa.calculateBadResultAcceptanceProbability( tMax, currentFitness,newFitness);
         System.out.println(p);
+    }
+
+    @Test
+    void testGenNewSol() {
+        LBSA lbsa = new LBSA();
+        int size = 20;
+        int[] solution = new int[size];
+        for(int i = 0; i < size; i++){
+            solution[i] = i;
+        }
+        solution = lbsa.genHybridNewSol(solution);
+        for(int i = 0; i < size; i++){
+            System.out.print(solution[i] + " ");
+        }
+    }
+
+    @Test
+    void genInsertNewSol() {
+        LBSA lbsa = new LBSA();
+        int size = 5;
+        int[] solution = new int[size];
+        for(int i = 0; i < size; i++){
+            solution[i] = i+1;
+        }
+        solution = lbsa.genInsertNewSol(solution, 3, 1);
+        for(int i = 0; i < size; i++){
+            System.out.print(solution[i] + " ");
+        }
     }
 }

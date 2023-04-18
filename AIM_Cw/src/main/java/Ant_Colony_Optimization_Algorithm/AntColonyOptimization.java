@@ -70,7 +70,7 @@ public class AntColonyOptimization {
                 this.numOfAnts, this.alpha, this.beta, this.evaporationRate, this.numIterations
                 );
         for(int i = 0; i < solution.length; i++){
-            System.out.printf("%d " , solution[i]+1);
+            System.out.printf("%d " , solution[i]);
         }
         System.out.println();
         System.out.println("D = " + bestSolutionLength);
@@ -93,12 +93,12 @@ public class AntColonyOptimization {
             }
             updatePheromones(ants);
         }
-        for(int i = 0; i < bestSolution.length; i++){
-            System.out.printf("%d " , bestSolution[i]+1);
-        }
-        System.out.println();
-        System.out.println("D = " + bestSolutionLength);
-        System.out.println();
+//        for(int i = 0; i < bestSolution.length; i++){
+//            System.out.printf("%d " , bestSolution[i]);
+//        }
+//        System.out.println();
+//        System.out.println("D = " + bestSolutionLength);
+//        System.out.println();
         return bestSolution;
     }
     public void updatePheromones(Ant[] ants){

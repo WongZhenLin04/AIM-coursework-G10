@@ -105,24 +105,53 @@ public class LBSA {
      * 1 2 3 4 5 end = 4 , start = 1 -> 1 5 3 4 2 -> 1 5 4 3 2
      *
      * @param sol
-     * @param substringSize
      * @return
      */
-    public int[] genNewSol(int[] sol) {
+    public int[] genInverseNewSol(int[] sol, int i, int j) {
         int[] newSol = sol.clone();
-        Random rand = new Random();
-        int start = rand.nextInt(1,newSol.length-1);
-        int end = rand.nextInt(start,newSol.length-1);
-        while (end > start) {
-            int temp = newSol[start];
-            newSol[start] = newSol[end];
-            newSol[end] = temp;
-            start++;
-            end--;
+//        Random rand = new Random();
+//        do{
+//            i = rand.nextInt(1,  newSol.length-2);
+//            j = rand.nextInt(1, newSol.length-2);
+//        }while(j - i < 1 && i -j >= newSol.length-3);
+        while (j > i) {
+            int temp = newSol[i];
+            newSol[i] = newSol[j];
+            newSol[j] = temp;
+            i++;
+            j--;
         }
         return newSol;
     }
 
+    /**
+     * Generat solution base on insert operator
+     * 1 2 3 4 5 -> (i = 1, j = 3) -> 1 4 2 3 5
+     * @param sol
+     * @return
+     */
+    public int[] genInsertNewSol(int[] sol, int i, int j){
+        int[] newSol = sol.clone();
+        Random rand = new Random();
+
+        if(i > j){
+            int temp = i;
+            i = j;
+            j = temp;
+        }
+        if(i < j){
+            int temp = newSol[i];
+            newSol[i] = newSol[j];
+            newSol[j] = temp;
+            i++;
+            while(i <= j){
+                newSol = swap(newSol, i, j);
+                i++;
+
+            }
+        }
+        return newSol;
+    }
     /**
      * Generate Solution based on swap 2 cities Operator
      * 1 2 3 4 5 -> (i = 1 , j = 4) -> 1 5 3 4 2
@@ -130,22 +159,46 @@ public class LBSA {
      * @param sol cities array
      * @return new solution of cities array
      */
-    public int[] genSwapNewSol(int[] sol) {
+    public int[] genSwapNewSol(int[] sol, int i, int j) {
         int[] newSol = sol.clone();
-        Random rand = new Random();
-        int i = 0, j = 0;
-
-        // make sure i and j diffrent random numbers
-        do {
-            i = rand.nextInt(1, sol.length - 2);
-            j = rand.nextInt(1, sol.length - 2);
-        } while (i == j);
-
         int temp = newSol[i];
         newSol[i] = sol[j];
         newSol[j] = temp;
         return newSol;
     }
+    public int[] genHybridNewSol(int sol[]){
+        int[] newSol = sol.clone();
+
+        Random rand = new Random();
+        int i = 0, j =0;
+        do {
+            i = rand.nextInt(1, sol.length - 2);
+            j = rand.nextInt(1, sol.length - 2);
+        } while (j - i < 1 && i -j >= newSol.length-3);
+
+        double inverseSolutionFitness = evalFitness(genInverseNewSol(sol, i, j));
+        double swapSolutionFitness = evalFitness(genSwapNewSol(sol, i, j));
+        double insertSolutionFitness =evalFitness(genInsertNewSol(sol, i, j));
+        if(inverseSolutionFitness <= swapSolutionFitness && inverseSolutionFitness <= insertSolutionFitness){
+            return genInverseNewSol(sol, i, j);
+        }
+        else if(swapSolutionFitness <= inverseSolutionFitness && swapSolutionFitness <= insertSolutionFitness){
+            return genSwapNewSol(sol, i, j);
+        }
+        else {
+            return genInsertNewSol(sol,i,j);
+        }
+
+
+    }
+    private int[] swap(int[] sol , int i, int j){
+        int[] swappedSol = sol.clone();
+        int temp = swappedSol[i];
+        swappedSol[i] = swappedSol[j];
+        swappedSol[j] = temp;
+        return swappedSol;
+    }
+
 
     // evaluate the fitness of a solution
     private double evalFitness(int[] solution) {
@@ -210,7 +263,7 @@ public class LBSA {
                 int[] currentSolution = solution;
 //                System.out.println("Current Solution: " + Arrays.toString(currentSolution));
                 currentFitness = evalFitness(currentSolution);
-                int[] newSolution = genNewSol(currentSolution);
+                int[] newSolution = genHybridNewSol(currentSolution);
 //                int[] newSolution = genSwapNewSol(currentSolution);
 //                System.out.println("New Solution: " + Arrays.toString(newSolution));
                 double newFitness = evalFitness(newSolution);
@@ -266,7 +319,7 @@ public class LBSA {
         int[] currentSolution = getBestSolution();
 
         for (int i = 0; i < temperatureListLength; i++) {
-            int[] newSolution = genNewSol(currentSolution);
+            int[] newSolution = genHybridNewSol(currentSolution);
 //            int[] newSolution = genSwapNewSol(currentSolution);
             double currentFitness = evalFitness(currentSolution);
             double newFitness = evalFitness(newSolution);
