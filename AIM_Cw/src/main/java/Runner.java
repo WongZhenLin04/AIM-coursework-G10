@@ -39,8 +39,7 @@ public class Runner{
         /*List Based Simulated Annealing*/
         int iterations = 1000;
         int perturbationSize = 20;
-        int temperatureListLength = 10;
-
+        int temperatureListLength = 120;
         double initialAcceptanceProbability = 0.9;
         /*
         CoolingSchedule coolingSchedule = new CoolingSchedule(0.99, iterations, CoolingSchedule.CoolingType.LINEAR);
