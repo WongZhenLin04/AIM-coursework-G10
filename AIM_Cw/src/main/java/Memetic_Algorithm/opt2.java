@@ -43,7 +43,7 @@ public class opt2 {
     }
 
     //helper for opt-2
-    private int[] opt2Swap(int[] cities,int i,int j){
+    public int[] opt2Swap(int[] cities,int i,int j){
         int temp= cities[i];
         cities[i]= cities[j];
         cities[j]=temp;
