@@ -37,17 +37,18 @@ public class Runner{
         //System.out.println(evals.evalSol(antColonyOptimization.findBestSolution()));
 
         /*List Based Simulated Annealing*/
-        int iterations = 50;
+        int iterations = 1000;
         int perturbationSize = 10;
-        int substringSize = 2;
-        int temperatureListLength = 2;
+        //int substringSize = 2;
+        int temperatureListLength = 120;
         double initialAcceptanceProbability = 0.9;
         /*
         CoolingSchedule coolingSchedule = new CoolingSchedule(0.99, iterations, CoolingSchedule.CoolingType.LINEAR);
         LBSA lbsa = new LBSA(30,5,iterations,100, coolingSchedule);
-        lbsa.genInitial();
+        lbsa.3nInitial();
         */
-        LBSA lbsa = new LBSA(perturbationSize, substringSize, iterations, temperatureListLength, initialAcceptanceProbability);
+        //LBSA lbsa = new LBSA(perturbationSize, substringSize, iterations, temperatureListLength, initialAcceptanceProbability);
+        LBSA lbsa = new LBSA(perturbationSize, iterations, temperatureListLength, initialAcceptanceProbability);
         lbsa.displayBestSolution();
         /*
         System.out.println("Best Solution = "+ Arrays.toString(lbsa.getBestSolution()));
