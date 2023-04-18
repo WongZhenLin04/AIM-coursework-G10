@@ -70,7 +70,7 @@ class LBSATest {
         for(int i = 0; i < size; i++){
             solution[i] = i+1;
         }
-        solution = lbsa.genInsertNewSol(solution, 3, 1);
+        solution = lbsa.generateInsertNewSolution(solution, 3, 1);
         for(int i = 0; i < size; i++){
             System.out.print(solution[i] + " ");
         }

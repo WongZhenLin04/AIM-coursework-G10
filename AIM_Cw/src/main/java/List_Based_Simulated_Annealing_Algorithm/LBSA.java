@@ -8,10 +8,7 @@ import Utility.evals;
 public class LBSA {
 
     private int perturbationSize;
-    private int substringSize;
     private int iterations;
-    private double initialTemperature;
-    private CoolingSchedule coolingSchedule;
     private List<int[]> initialSolution;
     private int[] bestSolution;
     private double bestFitness;
@@ -22,19 +19,6 @@ public class LBSA {
     public LBSA() {
 
     }
-
-    public LBSA(int perturbationSize, int substringSize, int iterations, double initialTemperature, CoolingSchedule coolingSchedule) {
-        this.perturbationSize = perturbationSize;
-        this.substringSize = substringSize;
-        this.iterations = iterations;
-        this.initialTemperature = initialTemperature;
-        this.coolingSchedule = coolingSchedule;
-        this.initialSolution = new ArrayList<>();
-        this.evalFuncs = new evals();
-        this.bestSolution = null;
-        this.bestFitness = Double.MAX_VALUE;
-    }
-
     public LBSA(int perturbationSize, int iterations, int temperatureListLength, double initialAcceptanceProbability) {
         this.perturbationSize = perturbationSize;
         this.iterations = iterations;
@@ -46,9 +30,6 @@ public class LBSA {
         this.bestFitness = Double.MAX_VALUE;
 
     }
-
-    int randomNum1 = 0;
-    int randomNum2 = 0;
 
     public void displayBestSolution() {
         System.out.println("List-Based Simulated Annealing ALgorithm: ");
@@ -110,13 +91,8 @@ public class LBSA {
      * @param sol
      * @return
      */
-    public int[] genInverseNewSol(int[] sol, int i, int j) {
+    public int[] generateInverseNewSolution(int[] sol, int i, int j) {
         int[] newSol = sol.clone();
-//        Random rand = new Random();
-//        do{
-//            i = rand.nextInt(1,  newSol.length-2);
-//            j = rand.nextInt(1, newSol.length-2);
-//        }while(j - i < 1 && i -j >= newSol.length-3);
         while (j > i) {
             int temp = newSol[i];
             newSol[i] = newSol[j];
@@ -177,10 +153,8 @@ public class LBSA {
      * @param sol
      * @return
      */
-    public int[] genInsertNewSol(int[] sol, int i, int j){
+    public int[] generateInsertNewSolution(int[] sol, int i, int j){
         int[] newSol = sol.clone();
-        Random rand = new Random();
-
         if(i > j){
             int temp = i;
             i = j;
@@ -192,7 +166,7 @@ public class LBSA {
             newSol[j] = temp;
             i++;
             while(i <= j){
-                newSol = swap(newSol, i, j);
+                newSol = generateSwapNewSolution(newSol, i, j);
                 i++;
 
             }
@@ -206,7 +180,7 @@ public class LBSA {
      * @param sol cities array
      * @return new solution of cities array
      */
-    public int[] genSwapNewSol(int[] sol, int i, int j) {
+    public int[] generateSwapNewSolution(int[] sol, int i, int j) {
         int[] newSol = sol.clone();
         int temp = newSol[i];
         newSol[i] = sol[j];
@@ -223,69 +197,27 @@ public class LBSA {
             j = rand.nextInt(1, sol.length - 2);
         } while (j - i < 1 && i -j >= newSol.length-3);
 
-        double inverseSolutionFitness = evalFitness(genInverseNewSol(sol, i, j));
-        double swapSolutionFitness = evalFitness(genSwapNewSol(sol, i, j));
-        double insertSolutionFitness =evalFitness(genInsertNewSol(sol, i, j));
+        double inverseSolutionFitness = evalFitness(generateInverseNewSolution(sol, i, j));
+        double swapSolutionFitness = evalFitness(generateSwapNewSolution(sol, i, j));
+        double insertSolutionFitness =evalFitness(generateInsertNewSolution(sol, i, j));
         if(inverseSolutionFitness <= swapSolutionFitness && inverseSolutionFitness <= insertSolutionFitness){
-            return genInverseNewSol(sol, i, j);
+            return generateInverseNewSolution(sol, i, j);
         }
         else if(swapSolutionFitness <= inverseSolutionFitness && swapSolutionFitness <= insertSolutionFitness){
-            return genSwapNewSol(sol, i, j);
+            return generateSwapNewSolution(sol, i, j);
         }
         else {
-            return genInsertNewSol(sol,i,j);
+            return generateInsertNewSolution(sol,i,j);
         }
-
-
     }
-    private int[] swap(int[] sol , int i, int j){
-        int[] swappedSol = sol.clone();
-        int temp = swappedSol[i];
-        swappedSol[i] = swappedSol[j];
-        swappedSol[j] = temp;
-        return swappedSol;
-    }
-
-
     // evaluate the fitness of a solution
     private double evalFitness(int[] solution) {
         return evalFuncs.evalSol(solution);
     }
 
-    /*
-    //    public void runLBSA() {
-    //
-    //        double currentTemperature = initialTemperature;
-    //        for (int i = 0; i < iterations; i++) {
-    //            for (int j = 0; j < perturbationSize; j++) {
-    //                int[] currentSolution = initialSolution.get(j);
-    ////                int[] currentSolution = bestSolution;
-    //                int[] newSolution = genNewSol(currentSolution, substringSize);
-    //                double currentFitness = evalFitness(currentSolution);
-    //                double newFitness = evalFitness(newSolution);
-    //                double deltaFitness = newFitness - currentFitness;
-    //                if (deltaFitness < 0 || Math.exp(-deltaFitness / currentTemperature) > Math.random()) {
-    //                    currentSolution = newSolution;
-    //                    currentFitness = newFitness;
-    //                }
-    //                if (currentFitness < bestFitness) {
-    //                    bestSolution = currentSolution;
-    //                    bestFitness = currentFitness;
-    //                }
-    //            }
-    //            currentTemperature = coolingSchedule.getTemperature(i);
-    //        }
-    //
-    //    }
-
-     */
     public double calculateBadResultAcceptanceProbability(double tmax, double currentFitness, double newFitness) {
         return Math.exp(-(newFitness - currentFitness) / tmax);
     }
-
-    opt2 opt2 = new opt2();
-    Random random = new Random();
-
     public double calculateNewTemperature(double r_probability, double oldTemp, double currentFitness, double newFitness) {
         // t = (t - (f(y) - f(x)))/ln(r)
         return (oldTemp - (newFitness - currentFitness)) / Math.log(r_probability);
@@ -295,7 +227,6 @@ public class LBSA {
         // produce initial temperature list
         generateIntialSolution();
         List<Double> temperatureList = createInitialTemperatureList(temperatureListLength, initialAcceptanceProbability);
-        double maxTemp = Collections.max(temperatureList);
         List<int[]> evaluationResultList = new ArrayList<>();
         int[] solution = getBestSolution();
         double currentFitness = 0;
@@ -303,48 +234,28 @@ public class LBSA {
 
         while (k <= iterations) {
             k++;
-            System.out.print(k);
             // t is used to store the total temperature calculated by formula di/ln(ri)
             double t = 0;
             int m = 0;
             int c = 0;
-
-
             while (m <= perturbationSize) {
                 m++;
                 int[] currentSolution = solution;
-
-                while (randomNum1 == randomNum2) {
-                    randomNum1 = random.nextInt(107);
-                    randomNum2 = random.nextInt(107);
-                }
-//                System.out.println("Current Solution: " + Arrays.toString(currentSolution));
                 currentFitness = evalFitness(currentSolution);
-
                 int[] newSolution = genHybridNewSol(currentSolution);
-
-//                int[] newSolution = genSwapNewSol(currentSolution);
-//                System.out.println("New Solution: " + Arrays.toString(newSolution));
                 double newFitness = evalFitness(newSolution);
                 Boolean is_new_picked = false;
-//                System.out.println("Curent fitness = " + currentFitness + " , new finess = " + newFitness);
                 if (newFitness < currentFitness) {
                     solution = newSolution;
-                    is_new_picked = true;
+
                 } else {
-                    maxTemp = Collections.max(temperatureList);
                     double p = calculateBadResultAcceptanceProbability(Collections.max(temperatureList), currentFitness, newFitness);
-//                    System.out.println("Tmax = " + Collections.max(temperatureList));
                     double r = Math.random();
-//                    System.out.println("P = " + p + " , random = " + r);
                     if (r < p) {
-//                        System.out.println("T = " + t);
-                        t = calculateNewTemperature(r, t, currentFitness, newFitness); // t = (t-delta)/ln(r)
-//                        System.out.println("New T = " + t);
+                        /** t = (t-delta)/ln(r)  */
+                        t = calculateNewTemperature(r, t, currentFitness, newFitness);
                         temperatureList.remove(Collections.max(temperatureList));
                         temperatureList.add(t);
-//                        System.out.println("temperature list size = " + temperatureList.size());
-                        //  temperatureList.set(temperatureList.indexOf(maxTemp), t);
                         solution = newSolution;
                         is_new_picked = true;
                         c++;
