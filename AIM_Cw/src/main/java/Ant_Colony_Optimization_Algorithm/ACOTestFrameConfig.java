@@ -3,7 +3,7 @@ package Ant_Colony_Optimization_Algorithm;
 public class ACOTestFrameConfig {
 
     /* */
-    private final int numOfAnts = 100;
+    private final int numOfAnts = 107;
 
     /* */
     private final int numIterations = 1000;
@@ -12,10 +12,10 @@ public class ACOTestFrameConfig {
     private final double alpha = 1;
 
     /* */
-    private final double beta = 2;
+    private final double beta = 3;
 
     /* evaporation rate should be < 1 */
-    private final double evaporationRate = 0.5;
+    private final double evaporationRate = 0.3;
 
     private static ACOTestFrameConfig oThis;
 
