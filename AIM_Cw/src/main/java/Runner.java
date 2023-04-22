@@ -68,7 +68,7 @@ public class Runner{
         //window.getContentPane().add(new plotGraph(bestSol));
 
         // set visibility
-        window.setVisible(true);
+        //window.setVisible(true);
     }
 
     public void printMatrix(AdTuples_memes[][] ar){

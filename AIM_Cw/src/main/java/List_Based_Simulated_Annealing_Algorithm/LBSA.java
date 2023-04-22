@@ -148,7 +148,7 @@ public class LBSA {
     }
 
     /**
-     * Generat solution base on insert operator
+     * Generate solution base on insert operator
      * 1 2 3 4 5 -> (i = 1, j = 3) -> 1 4 2 3 5
      * @param sol
      * @return

@@ -65,10 +65,6 @@ public class AntColonyOptimization {
     }
     public void  displayBestSolution(){
         int[] solution = findBestSolution();
-        System.out.println("Ant Colony Optimization Algorithm: ");
-        System.out.printf("Parameter: numOfAnts = %d, alpha = %.1f, beta = %.1f, evalorationRate = %.1f ,numOfIterations = %d\n",
-                this.numOfAnts, this.alpha, this.beta, this.evaporationRate, this.numIterations
-                );
         for(int i = 0; i < solution.length; i++){
             System.out.printf("%d " , solution[i]);
         }
@@ -76,6 +72,7 @@ public class AntColonyOptimization {
         System.out.println("D = " + bestSolutionLength);
         System.out.println();
     }
+
     public int[] findBestSolution(){
         int[] bestSolution = new int[numCities];
         bestSolutionLength = Double.MAX_VALUE;
