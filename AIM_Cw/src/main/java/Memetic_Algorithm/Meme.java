@@ -16,6 +16,11 @@ public class Meme {
     private final matrix_operators matrixOperators;
     private final int generationsSize;
     private final int substringSize;
+    private int[] bestSol;
+
+    public int[] getBestSol() {
+        return bestSol;
+    }
 
     public Meme(int populationSize, int tolerance, int generationsSize, int substringSize){
         this.populationSize=populationSize;
@@ -31,16 +36,13 @@ public class Meme {
         int x=0;
         List<Integer> X=new ArrayList<>();
         List<Double> Y=new ArrayList<>();
-        System.out.println("Initialising...");
         List<int[]> population=new ArrayList<>();
         for (int i = 0; i < populationSize; i++) {
             population.add(genRandomisedCities());
         }
-        System.out.println("Initialised!");
         int[] bestSol = eax.pickBest(population);
         int notImproved =0;
         List<int[]> generation =new ArrayList<>();
-        System.out.println("beginning training");
         int replace=1;
         while (notImproved<=tolerance){
             List<int[]> parents = selectRandom(population);
@@ -50,21 +52,16 @@ public class Meme {
             if(matrixOperators.countUnique(parents.get(1))!=107){
                 parents.set(1,genRandomisedCities());
             }
-            System.out.println(Arrays.toString(parents.get(0)));
-            System.out.println(Arrays.toString(parents.get(1)));
-            System.out.println(evals.evalSol(bestSol));
             List<int[]> offSprings;
 
             try{
                 offSprings = eax.applyEax(parents.get(0),parents.get(1));
             }catch (IndexOutOfBoundsException e){
-                System.out.println("Haha");
                 resetPop(population);
                 continue;
             }
 
             if(offSprings.isEmpty()){
-                System.out.println("Hello");
                 resetPop(population);
                 continue;
             }
@@ -72,11 +69,9 @@ public class Meme {
             //parameter of 1 good offspring so just choose the best one
             List<int[]> appliedCross = new ArrayList<>();
             for (int i = 0; i < offSprings.size(); i++) {
-                System.out.print(i);
                 crossX crossX = new crossX();
                 appliedCross.add(crossX.findBestSol(offSprings.get(i),substringSize,true));
             }
-            System.out.println();
             int[] bestOffspring = eax.pickBest(appliedCross);
 
             if(replace==generationsSize){
@@ -96,15 +91,10 @@ public class Meme {
             else{
                 notImproved++;
             }
-            System.out.println(notImproved);
             Y.add(evals.evalSol(bestSol));
             X.add(x);
             x++;
         }
-        System.out.println();
-        System.out.println("Training done!");
-        System.out.println(Arrays.toString(X.toArray()));
-        System.out.println(Arrays.toString(Y.toArray()));
         return bestSol;
     }
 
@@ -161,5 +151,17 @@ public class Meme {
             res[j] = temp;
         }
         return res;
+    }
+
+    public void printOpt(){
+        bestSol = applyMemes();
+        System.out.println("Memetic Algorithm: ");
+        System.out.print("Best solution = ");
+        for(int i = 0; i < bestSol.length; i++){
+            System.out.printf("%d " , bestSol[i]+1);
+        }
+        System.out.println();
+        System.out.println("Best solution length = " + bestSol);
+        System.out.println();
     }
 }

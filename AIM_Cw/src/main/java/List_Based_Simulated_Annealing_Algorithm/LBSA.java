@@ -41,12 +41,14 @@ public class LBSA {
          * the computational cost. A shorter temperature list focuses more on exploiting
          * promising solutions and may converge faster, but it may get stuck in local optima.
          */
-        System.out.printf("Parameter: numOfIterations = %d, perturbationSize = %d, temperatureListLength = %d, initialAcceptanceProbability = %.1f\n",
-                iterations, perturbationSize, temperatureListLength, initialAcceptanceProbability
-        );
         runLBSA();
-        System.out.println("Best Solution = " + Arrays.toString(this.getBestSolution()));
+        System.out.print("Best Solution = ");
+        for (int i = 0; i < getBestSolution().length; i++) {
+            System.out.print(getBestSolution()[i]+" ");
+        }
+        System.out.println();
         System.out.println("Best Fitness = " +getBestFitness());
+        System.out.println();
     }
 
     // generates the initial solution
@@ -54,7 +56,6 @@ public class LBSA {
         for (int i = 0; i < perturbationSize; i++) {
             initialSolution.add(genRandomisedCities());
         }
-        //      runLBSA();
     }
 
     private int[] genRandomisedCities() {
@@ -219,7 +220,6 @@ public class LBSA {
         return Math.exp(-(newFitness - currentFitness) / tmax);
     }
     public double calculateNewTemperature(double r_probability, double oldTemp, double currentFitness, double newFitness) {
-        // t = (t - (f(y) - f(x)))/ln(r)
         return (oldTemp - (newFitness - currentFitness)) / Math.log(r_probability);
     }
 

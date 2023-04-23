@@ -1,7 +1,5 @@
 package Ant_Colony_Optimization_Algorithm;
 
-import Utility.evals;
-
 import java.util.Random;
 
 public class AntColonyOptimization {
@@ -28,34 +26,6 @@ public class AntColonyOptimization {
         generatePheromoneMatrix();
     }
 
-
-    public int getNumOfAnts() {
-        return numOfAnts;
-    }
-
-    public double getAlpha() {
-        return alpha;
-    }
-
-
-    public double getBeta() {
-        return beta;
-    }
-    public double getEvaporationRate() {
-        return evaporationRate;
-    }
-    public int getNumIterations() {
-        return numIterations;
-    }
-    public int getNumCities() {
-        return numCities;
-    }
-    public double[][] getDistanceMatrix() {
-        return distanceMatrix;
-    }
-    public double[][] getPheromoneMatrix() {
-        return pheromoneMatrix;
-    }
     public void generatePheromoneMatrix(){
        for(int i = 0; i < numCities; i++){
            for(int j = 0; j < numCities; j++){
@@ -65,11 +35,13 @@ public class AntColonyOptimization {
     }
     public void  displayBestSolution(){
         int[] solution = findBestSolution();
+        System.out.println("Ant Colony Optimisation: ");
+        System.out.print("Best solution = ");
         for(int i = 0; i < solution.length; i++){
-            System.out.printf("%d " , solution[i]);
+            System.out.printf("%d " , solution[i]+1);
         }
         System.out.println();
-        System.out.println("D = " + bestSolutionLength);
+        System.out.println("Best solution length = " + bestSolutionLength);
         System.out.println();
     }
 
@@ -90,12 +62,6 @@ public class AntColonyOptimization {
             }
             updatePheromones(ants);
         }
-//        for(int i = 0; i < bestSolution.length; i++){
-//            System.out.printf("%d " , bestSolution[i]);
-//        }
-//        System.out.println();
-//        System.out.println("D = " + bestSolutionLength);
-//        System.out.println();
         return bestSolution;
     }
     public void updatePheromones(Ant[] ants){

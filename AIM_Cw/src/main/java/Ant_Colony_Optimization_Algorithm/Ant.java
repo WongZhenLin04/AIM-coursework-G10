@@ -66,30 +66,22 @@ public class Ant {
         for(int i = 1; i < numCities; i++){
             if(!visited[i]){
                 double pheromone = Math.pow(pheromoneMatrix[this.currentPosition][i], alpha);
-                // heuristic = 1/Lk
                 double heuristic = Math.pow(1/distanceMatrix[currentPosition][i],beta);
                 probabilities[i] = pheromone*heuristic;
-        //        System.out.println("Probability " + i + " = " + probabilities[i]);
                 total += probabilities[i];
-     //           System.out.println("total = " + total);
             }
         }
-    //    System.out.println("total = " + total);
         for(int i = 0; i < numCities; i++){
             probabilities[i] /= total;
-   //         System.out.println("Probability at " + i + " = " + probabilities[i]);
         }
 
         double r = rand.nextDouble(0,1);
         double cumulativeSum = 0;
-  //      System.out.println("r = " + r);
         for(int i = 0; i < numCities; i++){
             if(!visited[i]){
                 cumulativeSum += probabilities[i];
-  //              System.out.println("Cumulative sum at " + i + " = " + cumulativeSum);
                 if(r < cumulativeSum){
                     nextCity = i;
-    //                System.out.println(nextCity);
                     return nextCity;
 
                 }
