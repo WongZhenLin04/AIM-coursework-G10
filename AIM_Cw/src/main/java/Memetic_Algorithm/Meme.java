@@ -1,5 +1,6 @@
 package Memetic_Algorithm;
 
+import Utility.OptimizationAlgorithm;
 import Utility.evals;
 import Utility.matrix_operators;
 
@@ -8,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
-public class Meme {
+public class Meme extends OptimizationAlgorithm {
     private final int populationSize;
     private final EAX eax;
     private final int tolerance;
@@ -95,6 +96,8 @@ public class Meme {
             X.add(x);
             x++;
         }
+        setBestSolution(bestSol);
+        setBestSolutionFitness(evals.evalSol(bestSol));
         return bestSol;
     }
 

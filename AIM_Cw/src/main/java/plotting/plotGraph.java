@@ -4,14 +4,20 @@ import Utility.coordinates;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.Line2D;
 import java.util.ArrayList;
 import java.util.List;
 
 public class plotGraph extends JComponent {
     private int[] X;
     private int[] Y;
+    private double bestSolFitness;
+    private String algorithmName;
 
-    public plotGraph(int[] Sol){
+    public plotGraph(int[] Sol, double bestSolFitness, String algorithmName){
+        this.bestSolFitness = bestSolFitness;
+        this.algorithmName = algorithmName;
         coordinates coords = new coordinates();
         List<String> stringCoords = coords.getCoordsList();
         List<Double> coordsX = new ArrayList<>();
@@ -22,14 +28,32 @@ public class plotGraph extends JComponent {
         }
         X=new int[Sol.length];
         Y=new int[Sol.length];
+
+
         for (int i = 0; i < Sol.length; i++) {
             X[i]=coordsX.get(Sol[i]).intValue()/15;
             Y[i]=coordsY.get(Sol[i]).intValue()/15;
+
         }
+
+
     }
+
     public void paint(Graphics g) {
         int z = X.length;
         g.drawPolygon(X,Y,z);
+        g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
+        String optimalSolutionString = algorithmName + " : "  + bestSolFitness;
+        g.drawString(optimalSolutionString, 200,200);
+        System.out.println("X length = " + X.length );
+        for(int i =0; i < X.length; i++){
+            g.drawOval(X[i]-2,Y[i]-2,5,5);
+            g.setColor(Color.RED);
+            g.fillOval(X[i]-2,Y[i]-2,5,5);
+        }
+
+
     }
+
 
 }

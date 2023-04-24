@@ -1,8 +1,13 @@
 package Ant_Colony_Optimization_Algorithm;
 
+
+
+
+import Utility.OptimizationAlgorithm;
+
 import java.util.Random;
 
-public class AntColonyOptimization {
+public class AntColonyOptimization extends OptimizationAlgorithm {
     private int numOfAnts;
     private double alpha;
     private double beta;
@@ -12,8 +17,7 @@ public class AntColonyOptimization {
     private double[][] distanceMatrix;
     private double[][] pheromoneMatrix;
     private ACOTestFrameConfig acoTestFrameConfig = ACOTestFrameConfig.getInstance();
-    private double bestSolutionLength;
-    private int[] bestSolution;
+
     public AntColonyOptimization(int numCities, double[][] distanceMatrix) {
         this.numOfAnts = acoTestFrameConfig.getNumOfAnts();
         this.alpha = acoTestFrameConfig.getAlpha();
@@ -25,6 +29,7 @@ public class AntColonyOptimization {
         this.pheromoneMatrix = new double[this.numCities][this.numCities];
         generatePheromoneMatrix();
     }
+
 
     public void generatePheromoneMatrix(){
        for(int i = 0; i < numCities; i++){
@@ -38,16 +43,16 @@ public class AntColonyOptimization {
         System.out.println("Ant Colony Optimisation: ");
         System.out.print("Best solution = ");
         for(int i = 0; i < solution.length; i++){
-            System.out.printf("%d " , solution[i]+1);
+            System.out.printf("%d " , solution[i]);
         }
         System.out.println();
-        System.out.println("Best solution length = " + bestSolutionLength);
+        System.out.println("Best solution length = " + getBestSolutionFitness());
         System.out.println();
     }
 
     public int[] findBestSolution(){
         int[] bestSolution = new int[numCities];
-        bestSolutionLength = Double.MAX_VALUE;
+        double bestSolutionLength = Double.MAX_VALUE;
         Random rand = new Random();
         for(int i = 0; i < numIterations; i++){
             Ant[] ants = new Ant[numOfAnts];
@@ -55,6 +60,7 @@ public class AntColonyOptimization {
             for(int j = 0; j < numOfAnts; j++){
                 ants[j] = new Ant(rand.nextInt(numCities), numCities);
                 ants[j].constructSolution(distanceMatrix,pheromoneMatrix,alpha,beta);
+
                 if(ants[j].getTourLength() < bestSolutionLength){
                     bestSolutionLength = ants[j].getTourLength();
                     System.arraycopy(ants[j].getTour(), 0, bestSolution, 0, numCities);
@@ -62,6 +68,9 @@ public class AntColonyOptimization {
             }
             updatePheromones(ants);
         }
+        setBestSolution(bestSolution);
+        setBestSolutionFitness(bestSolutionLength);
+
         return bestSolution;
     }
     public void updatePheromones(Ant[] ants){

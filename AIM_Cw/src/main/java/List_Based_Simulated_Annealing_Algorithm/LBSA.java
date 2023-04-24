@@ -2,10 +2,12 @@ package List_Based_Simulated_Annealing_Algorithm;
 
 import java.util.*;
 
+import Ant_Colony_Optimization_Algorithm.AntColonyOptimization;
 import Memetic_Algorithm.opt2;
+import Utility.OptimizationAlgorithm;
 import Utility.evals;
 
-public class LBSA {
+public class LBSA extends OptimizationAlgorithm {
 
     private int perturbationSize;
     private int iterations;
@@ -74,7 +76,7 @@ public class LBSA {
     }
 
     private int[] genCities() {
-        int[] res = new int[108];
+        int[] res = new int[107];
         for (int i = 0; i < 107; i++) {
             res[i] = i;
         }
@@ -279,6 +281,8 @@ public class LBSA {
         solution[solution.length-1] = solution[0];
         bestSolution = solution;
         bestFitness = currentFitness;
+        setBestSolution(bestSolution);
+        setBestSolutionFitness(bestFitness);
     }
 
     public List<Double> createInitialTemperatureList(int temperatureListLength, double intialAcceptanceProbability) {

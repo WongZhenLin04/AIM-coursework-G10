@@ -1,16 +1,13 @@
 import Ant_Colony_Optimization_Algorithm.ACOTestFrameConfig;
 import Ant_Colony_Optimization_Algorithm.AntColonyOptimization;
 import List_Based_Simulated_Annealing_Algorithm.LBSA;
-import Memetic_Algorithm.EAX;
 import Memetic_Algorithm.Meme;
-import Memetic_Algorithm.crossX;
 import Utility.AdTuples_memes;
+import Utility.OptimizationAlgorithm;
 import Utility.coordinates;
-import Utility.evals;
 import Utility.matrix_operators;
 import plotting.plotGraph;
 
-import java.util.Arrays;
 import java.util.List;
 
 import javax.swing.*;
@@ -43,6 +40,12 @@ public class Runner{
         meme.printOpt();
 
 
+        createJFrame(antColonyOptimization);
+        createJFrame(lbsa);
+        createJFrame(meme);
+    }
+    public static void createJFrame(OptimizationAlgorithm algorithm){
+
         // creating object of JFrame(Window popup)
         JFrame window = new JFrame();
 
@@ -50,14 +53,13 @@ public class Runner{
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         // setting size of the pop window
-        window.setBounds(30, 30, 2000, 2000);
+        window.setBounds(0, 0, 2000, 2000);
         // setting canvas for draw
-        window.getContentPane().add(new plotGraph(meme.getBestSol()));
+        window.getContentPane().add(new plotGraph(algorithm.getBestSolution(), algorithm.getBestSolutionFitness(), algorithm.getClass().getSimpleName()));
 
         // set visibility
-        //window.setVisible(true);
+        window.setVisible(true);
     }
-
     public void printMatrix(AdTuples_memes[][] ar){
         for (int i=0;i<ar.length;i++) {
             for (int j = 0; j < ar.length; j++) {
