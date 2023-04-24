@@ -44,6 +44,7 @@ public class Runner{
         createJFrame(lbsa);
         createJFrame(meme);
     }
+    
     public static void createJFrame(OptimizationAlgorithm algorithm){
 
         // creating object of JFrame(Window popup)
