@@ -43,7 +43,7 @@ public class AntColonyOptimization extends OptimizationAlgorithm {
         System.out.println("Ant Colony Optimisation: ");
         System.out.print("Best solution = ");
         for(int i = 0; i < solution.length; i++){
-            System.out.printf("%d " , solution[i]);
+            System.out.printf("%d " , solution[i]+1);
         }
         System.out.println();
         System.out.println("Best solution length = " + getBestSolutionFitness());

@@ -46,7 +46,7 @@ public class LBSA extends OptimizationAlgorithm {
         runLBSA();
         System.out.print("Best Solution = ");
         for (int i = 0; i < getBestSolution().length; i++) {
-            System.out.print(getBestSolution()[i]+" ");
+            System.out.print(getBestSolution()[i]+1+" ");
         }
         System.out.println();
         System.out.println("Best solution length = " +getBestFitness());

@@ -8,6 +8,7 @@ import Utility.coordinates;
 import Utility.matrix_operators;
 import plotting.plotGraph;
 
+import java.awt.*;
 import java.util.List;
 
 import javax.swing.*;
@@ -53,11 +54,16 @@ public class Runner{
         // setting closing operation
         window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         // setting size of the pop window
-        window.setBounds(0, 0, 2000, 2000);
+        window.setBounds(0, 0, screenSize.width, screenSize.height);
+
+
+
         // setting canvas for draw
         window.getContentPane().add(new plotGraph(algorithm.getBestSolution(), algorithm.getBestSolutionFitness(), algorithm.getClass().getSimpleName()));
 
+        window.getContentPane().setBackground(Color.WHITE);
         // set visibility
         window.setVisible(true);
     }

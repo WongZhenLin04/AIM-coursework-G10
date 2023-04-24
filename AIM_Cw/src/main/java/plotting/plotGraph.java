@@ -7,16 +7,19 @@ import java.awt.*;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Line2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class plotGraph extends JComponent {
     private int[] X;
     private int[] Y;
-    private double bestSolFitness;
+    private double bestSolutionFitness;
     private String algorithmName;
+    private int[] bestSolution;
 
     public plotGraph(int[] Sol, double bestSolFitness, String algorithmName){
-        this.bestSolFitness = bestSolFitness;
+        this.bestSolution = Sol;
+        this.bestSolutionFitness = bestSolFitness;
         this.algorithmName = algorithmName;
         coordinates coords = new coordinates();
         List<String> stringCoords = coords.getCoordsList();
@@ -36,16 +39,14 @@ public class plotGraph extends JComponent {
 
         }
 
-
     }
 
     public void paint(Graphics g) {
         int z = X.length;
         g.drawPolygon(X,Y,z);
         g.setFont(new Font("TimesRoman", Font.PLAIN, 40));
-        String optimalSolutionString = algorithmName + " : "  + bestSolFitness;
-        g.drawString(optimalSolutionString, 200,200);
-        System.out.println("X length = " + X.length );
+        String optimalSolutionFitnessString = algorithmName + " : "  + bestSolutionFitness;
+        g.drawString(optimalSolutionFitnessString, 450,200);
         for(int i =0; i < X.length; i++){
             g.drawOval(X[i]-2,Y[i]-2,5,5);
             g.setColor(Color.RED);
